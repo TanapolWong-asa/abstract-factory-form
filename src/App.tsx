@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import { EditPartner } from "./pages";
+import ATFormFactory from "./pages/EditPartner/FormFactory/ATFormFactory";
+import { FormFactory } from "./pages/EditPartner/FormFactory/FormFactory";
+import WMFormFactory from "./pages/EditPartner/FormFactory/WMFormFactory";
 
-function App() {
+enum Technology {
+  WM = "WM",
+  AT = "AT",
+}
+
+const App = () => {
+  const [technology, setTechnology] = useState<string>();
+  const [factory, setFactory] = useState<FormFactory>();
+
+  useEffect(() => {
+    if (technology === Technology.WM) {
+      setFactory(new WMFormFactory());
+    } else if (technology === Technology.AT) {
+      setFactory(new ATFormFactory());
+    }
+  }, [technology]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <select onChange={(e) => setTechnology(e.target.value)}>
+        {Object.values(Technology).map((technology) => (
+          <option key={technology} value={technology}>
+            {technology}
+          </option>
+        ))}
+      </select>
+      {factory ? <EditPartner formFactory={factory} /> : <div>No Form</div>}
     </div>
   );
-}
+};
 
 export default App;
