@@ -12,7 +12,6 @@ const EditPartner: React.FC<EditPartnerProps> = ({
   const [form, setForm] = useState<ReactNode>(null);
 
   useEffect(() => {
-    console.log(stage);
     setFormByStage();
   }, [stage, formFactory]);
 

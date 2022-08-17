@@ -4,18 +4,29 @@ import {
   SetStateAction,
   useState,
 } from "react";
+import { IWMIntegrationData } from "../interfaces";
 
+const initialWMIntegrationData: IWMIntegrationData = {
+  integrationId: "",
+  integrationName: "",
+  technology: "WM",
+  businessTransaction: {
+    businessTransactionList: [],
+  },
+};
+// XXX: Add other tech integration interface here
+type IntegrationType = IWMIntegrationData;
 export interface ISelectedIntegrationContext {
   partnerId: string;
   setPartnerId: React.Dispatch<SetStateAction<string>>;
-  selectedIntegration: Object;
-  setSelectedIntegration: React.Dispatch<SetStateAction<Object>>;
+  selectedIntegration: IntegrationType;
+  setSelectedIntegration: React.Dispatch<SetStateAction<IntegrationType>>;
 }
 export const SelectedIntegrationContext =
   createContext<ISelectedIntegrationContext>({
     partnerId: "",
     setPartnerId: () => null,
-    selectedIntegration: {},
+    selectedIntegration: initialWMIntegrationData,
     setSelectedIntegration: () => null,
   });
 
@@ -24,7 +35,8 @@ interface SelectedIntegrationProviderProps {}
 export const SelectedIntegrationProvider: FunctionComponent<
   SelectedIntegrationProviderProps
 > = (props: any) => {
-  const [selectedIntegration, setSelectedIntegration] = useState<Object>({});
+  const [selectedIntegration, setSelectedIntegration] =
+    useState<IntegrationType>(initialWMIntegrationData);
   const [partnerId, setPartnerId] = useState<string>("");
 
   const value: ISelectedIntegrationContext = {

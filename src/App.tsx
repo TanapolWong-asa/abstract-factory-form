@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./App.css";
 import { EditPartner } from "./pages";
 import ATFormFactory from "./pages/EditPartner/FormFactory/ATFormFactory";
 import { FormFactory } from "./pages/EditPartner/FormFactory/FormFactory";
 import WMFormFactory from "./pages/EditPartner/FormFactory/WMFormFactory";
+import {
+  ISelectedIntegrationContext,
+  SelectedIntegrationContext,
+} from "./stores/selectedIntegration";
 
 enum Technology {
   WM = "WM",
@@ -13,12 +17,33 @@ enum Technology {
 const App = () => {
   const [technology, setTechnology] = useState<string>();
   const [factory, setFactory] = useState<FormFactory>();
+  const {
+    partnerId,
+    setPartnerId,
+    selectedIntegration,
+    setSelectedIntegration,
+  } = useContext<ISelectedIntegrationContext>(SelectedIntegrationContext);
 
   useEffect(() => {
     if (technology === Technology.WM) {
-      setFactory(new WMFormFactory());
+      setFactory(
+        new WMFormFactory({
+          partnerId,
+          setPartnerId,
+          selectedIntegration,
+          setSelectedIntegration,
+        })
+      );
     } else if (technology === Technology.AT) {
-      setFactory(new ATFormFactory());
+      // TODO: Edit this to follow WMFormFactory
+      setFactory(
+        new ATFormFactory({
+          partnerId,
+          setPartnerId,
+          selectedIntegration,
+          setSelectedIntegration,
+        })
+      );
     }
   }, [technology]);
 
