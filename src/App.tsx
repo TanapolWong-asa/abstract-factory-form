@@ -24,12 +24,18 @@ const App = () => {
 
   return (
     <div className="App">
-      <select onChange={(e) => setTechnology(e.target.value)}>
+      <select
+        onChange={(e) => setTechnology(e.target.value)}
+        defaultValue="default"
+      >
         {Object.values(Technology).map((technology) => (
           <option key={technology} value={technology}>
             {technology}
           </option>
         ))}
+        <option value="default" disabled hidden>
+          Select techonology...
+        </option>
       </select>
       {factory ? <EditPartner formFactory={factory} /> : <div>No Form</div>}
     </div>
