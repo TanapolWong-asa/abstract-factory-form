@@ -1,5 +1,6 @@
-import { useCallback, useContext, useEffect } from 'react'
+import React, { useCallback, useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+
 import { IWMIntegrationData, IWMIntegrationFormData } from '../../../../interfaces'
 import { IIntegrationsContext, IntegrationsContext } from '../../../../stores/intergrations'
 import {
@@ -18,7 +19,7 @@ class WMIntegrationForm extends IntegrationForm {
 export default WMIntegrationForm
 
 interface FormProps {}
-const Form: React.FC<FormProps> = ({}: FormProps) => {
+const Form: React.FC<FormProps> = () => {
 	const { partnerId, selectedIntegration, setSelectedIntegration } =
 		useContext<ISelectedIntegrationContext>(SelectedIntegrationContext)
 	const { setIntegrations } = useContext<IIntegrationsContext>(IntegrationsContext)
@@ -63,7 +64,7 @@ const Form: React.FC<FormProps> = ({}: FormProps) => {
 			obj[key]
 
 	const resetForm = useCallback(() => {
-		let isDirty = selectedIntegration.isDirty || selectedIntegration.hasError
+		const isDirty = selectedIntegration.isDirty || selectedIntegration.hasError
 		if (isDirty === true) {
 			trigger()
 		} else {
@@ -142,7 +143,7 @@ const Form: React.FC<FormProps> = ({}: FormProps) => {
 			...(selectedIntegration as IWMIntegrationData),
 			integrationName: integrationFormData.integrationName,
 			isDirty: true,
-			hasError: hasError,
+			hasError,
 			dirtyFields: newDirtyFields,
 			errorFields: newErrorFields,
 		}
