@@ -5,6 +5,10 @@ import {
   IWMIntegrationFormData,
 } from "../../../../interfaces";
 import {
+  IIntegrationsContext,
+  IntegrationsContext,
+} from "../../../../stores/intergrations";
+import {
   ISelectedIntegrationContext,
   SelectedIntegrationContext,
 } from "../../../../stores/selectedIntegration";
@@ -12,45 +16,20 @@ import { InputType, RenderFormItemByType } from "../../Form";
 import IntegrationForm from "./IntegrationForm";
 
 class WMIntegrationForm extends IntegrationForm {
-  protected generateIntegrationDraftKey(): string {
-    const {
-      partnerId,
-      selectedIntegration: { integrationId },
-    } = this.state;
+  // protected generateIntegrationDraftKey(): string {
+  //   const {
+  //     partnerId,
+  //     selectedIntegration: { integrationId },
+  //   } = this.state; // FIXME: state change too late so selecting new integration will save it's data to the old one
 
-    return `${partnerId}-${integrationId}-WMIntegrationDraft`;
-  }
-  protected preprocessIntegrationInfoFormData(
-    selectedIntegration: IWMIntegrationData
-  ): IWMIntegrationFormData {
-    const draft = JSON.parse(this.readDraft() || "{}");
-    const allDirtyFields = {
-      ...selectedIntegration.dirtyFields,
-      ...(draft as any)["dirtyFields"],
-    };
-
-    const processedFormData = {
-      technology: selectedIntegration.technology,
-      integrationName:
-        (draft as any)["integrationName"] ||
-        selectedIntegration.integrationName,
-      isDirty: selectedIntegration.isDirty || false,
-      hasError: selectedIntegration.hasError || false,
-      dirtyFields: allDirtyFields,
-    };
-    this.saveDraft(JSON.stringify(processedFormData));
-
-    return processedFormData;
-  }
+  //   // console.log(`${partnerId}-${integrationId}-WMIntegrationDraft`);
+  //   return `${partnerId}-${integrationId}-WMIntegrationDraft`;
+  // }
   render() {
     return (
       <Form
-        preprocessIntegrationInfoFormData={
-          this.preprocessIntegrationInfoFormData
-        }
-        // selectedIntegration={this.state.selectedIntegration}
-        saveDraft={this.saveDraft}
-        readDraft={this.readDraft}
+        partnerId={this.state.partnerId}
+        // saveDraft={this.saveDraft} readDraft={this.readDraft}
       />
     );
   }
@@ -60,23 +39,29 @@ WMIntegrationForm.contextType = SelectedIntegrationContext;
 export default WMIntegrationForm;
 
 interface FormProps {
-  preprocessIntegrationInfoFormData: (
-    selectedIntegration: IWMIntegrationData
-  ) => IWMIntegrationFormData;
-  // selectedIntegration: IWMIntegrationData;
-  saveDraft: Function;
-  readDraft: Function;
+  partnerId: string;
+  // saveDraft: Function;
+  // readDraft: Function;
 }
 const Form: React.FC<FormProps> = ({
-  saveDraft,
-  readDraft,
-}: // selectedIntegration,
-
-// preprocessIntegrationInfoFormData,
+  partnerId,
+}: // saveDraft,
+// readDraft,
 FormProps) => {
-  const context = useContext<ISelectedIntegrationContext>(
-    SelectedIntegrationContext
+  const { selectedIntegration, setSelectedIntegration } =
+    useContext<ISelectedIntegrationContext>(SelectedIntegrationContext);
+  const { setIntegrations } =
+    useContext<IIntegrationsContext>(IntegrationsContext);
+
+  const generateIntegrationDraftKey = useCallback(
+    () =>
+      `${partnerId}-${selectedIntegration.integrationId}-WMIntegrationDraft`,
+    [partnerId, selectedIntegration]
   );
+  const saveDraft = (content: string) =>
+    localStorage.setItem(generateIntegrationDraftKey(), content);
+  const readDraft = () => localStorage.getItem(generateIntegrationDraftKey());
+
   const { register, setValue, getValues, control, formState, trigger } =
     useForm<IWMIntegrationFormData>();
   const formList = [
@@ -109,16 +94,14 @@ FormProps) => {
       obj[key];
 
   const resetForm = useCallback(() => {
-    let isDirty =
-      context.selectedIntegration.isDirty ||
-      context.selectedIntegration.hasError;
+    let isDirty = selectedIntegration.isDirty || selectedIntegration.hasError;
     if (isDirty === true) {
       trigger();
     } else {
       formState.errors = {};
       formState.isDirty = false;
     }
-  }, [context.selectedIntegration]);
+  }, [selectedIntegration]);
   useEffect(() => resetForm(), [resetForm]);
 
   const preprocessIntegrationInfoFormData = (
@@ -130,7 +113,7 @@ FormProps) => {
       ...(draft as any)["dirtyFields"],
     };
 
-    const processedFormData = {
+    const processedFormData: IWMIntegrationFormData = {
       technology: selectedIntegration.technology,
       integrationName:
         (draft as any)["integrationName"] ||
@@ -139,6 +122,9 @@ FormProps) => {
       hasError: selectedIntegration.hasError || false,
       dirtyFields: allDirtyFields,
     };
+
+    // console.log("process", selectedIntegration.integrationId);
+
     saveDraft(JSON.stringify(processedFormData));
 
     return processedFormData;
@@ -148,7 +134,7 @@ FormProps) => {
   useEffect(() => {
     updateSelectedIntegration(
       preprocessIntegrationInfoFormData(
-        context.selectedIntegration as IWMIntegrationData
+        selectedIntegration as IWMIntegrationData
       )
     );
   }, []);
@@ -157,7 +143,7 @@ FormProps) => {
   useEffect(() => {
     const integrationInfoFormData: IWMIntegrationFormData =
       preprocessIntegrationInfoFormData(
-        context.selectedIntegration as IWMIntegrationData
+        selectedIntegration as IWMIntegrationData
       );
     const keys = Object.keys(integrationInfoFormData);
     formList.forEach((item: { formItemName: string; defaultValue: string }) => {
@@ -170,13 +156,12 @@ FormProps) => {
       });
     });
     resetForm();
-  }, [context.selectedIntegration]);
+  }, [selectedIntegration]);
 
-  // update selectedIntegration from context
+  // update selectedIntegration in context
   const updateSelectedIntegration = (
     integrationFormData: IWMIntegrationFormData
   ) => {
-    saveDraft(JSON.stringify(integrationFormData));
     const draft = JSON.parse(readDraft() || "{}");
     const allDirtyFields = {
       ...(integrationFormData.dirtyFields || {}),
@@ -186,19 +171,29 @@ FormProps) => {
     const hasError = Object.keys(formState.errors).length !== 0;
     const newErrorFields = Object.keys(formState.errors) || [];
     const newDirtyFields = {
-      ...context.selectedIntegration.dirtyFields,
+      ...selectedIntegration.dirtyFields,
       ...formState.dirtyFields,
       ...allDirtyFields,
     };
     const updatedWMIntegrationData: IWMIntegrationData = {
-      ...(context.selectedIntegration as IWMIntegrationData),
+      ...(selectedIntegration as IWMIntegrationData),
       integrationName: integrationFormData.integrationName,
       isDirty: true,
       hasError: hasError,
       dirtyFields: newDirtyFields,
       errorFields: newErrorFields,
     };
-    context.setSelectedIntegration(updatedWMIntegrationData);
+    // console.log("update selectedInt", selectedIntegration.integrationId);
+    saveDraft(JSON.stringify(integrationFormData));
+    setSelectedIntegration(updatedWMIntegrationData);
+    setIntegrations((integrations) =>
+      integrations.map((integration) => {
+        if (integration.integrationId === selectedIntegration.integrationId) {
+          return updatedWMIntegrationData;
+        }
+        return integration;
+      })
+    );
   };
 
   return (
@@ -224,7 +219,7 @@ FormProps) => {
             regex={formItem.regex}
             disabled={formItem.disabled}
             errorMessage={formItem.errorMessage}
-            dirtyFields={context.selectedIntegration.dirtyFields}
+            dirtyFields={selectedIntegration.dirtyFields}
             control={control}
           />
         );

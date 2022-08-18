@@ -4,10 +4,12 @@ import {
   SetStateAction,
   useState,
 } from "react";
+import { IntegrationType } from "../interfaces";
+import { INTEGRATIONS } from "./mockData";
 
 export interface IIntegrationsContext {
-  integrations: Object[];
-  setIntegrations: React.Dispatch<SetStateAction<Object[]>>;
+  integrations: IntegrationType[];
+  setIntegrations: React.Dispatch<SetStateAction<IntegrationType[]>>;
 }
 export const IntegrationsContext = createContext<IIntegrationsContext>({
   integrations: [],
@@ -19,7 +21,8 @@ interface IntegrationsProviderProps {}
 export const IntegrationsProvider: FunctionComponent<
   IntegrationsProviderProps
 > = (props: any) => {
-  const [integrations, setIntegrations] = useState<Object[]>([]);
+  const [integrations, setIntegrations] =
+    useState<IntegrationType[]>(INTEGRATIONS);
 
   const value: IIntegrationsContext = {
     integrations: integrations,

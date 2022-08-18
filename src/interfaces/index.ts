@@ -29,5 +29,20 @@ export interface IWMIntegrationFormData extends IIntegrationFormData {
   integrationName: string;
 }
 
-export interface IATIntegrationData extends IIntegrationData {}
-export interface IATIntegrationFormData extends IIntegrationFormData {}
+export interface IATIntegrationData extends IIntegrationData {
+  integrationId: string;
+  integrationName: string;
+  technology: string;
+  businessLine: string;
+
+  job: {
+    jobList: any[] | undefined;
+  };
+  ATRef?: any;
+}
+export interface IATIntegrationFormData extends IIntegrationFormData {
+  technology: string;
+  integrationName: string;
+}
+
+export type IntegrationType = IWMIntegrationData | IATIntegrationData;

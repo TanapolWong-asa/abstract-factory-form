@@ -4,7 +4,7 @@ import {
   SetStateAction,
   useState,
 } from "react";
-import { IATIntegrationData, IWMIntegrationData } from "../interfaces";
+import { IntegrationType, IWMIntegrationData } from "../interfaces";
 
 const initialWMIntegrationData: IWMIntegrationData = {
   integrationId: "",
@@ -15,7 +15,6 @@ const initialWMIntegrationData: IWMIntegrationData = {
   },
 };
 // XXX: Add other tech integration interface here
-type IntegrationType = IWMIntegrationData | IATIntegrationData;
 export interface ISelectedIntegrationContext {
   partnerId: string;
   setPartnerId: React.Dispatch<SetStateAction<string>>;

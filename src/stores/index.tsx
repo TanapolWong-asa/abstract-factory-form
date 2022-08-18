@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ReactNode } from "react";
-import { IntegrationsProvider } from "./intergration";
+import { IntegrationsProvider } from "./intergrations";
 import { SelectedIntegrationProvider } from "./selectedIntegration";
 
 interface StoreProviderProps {

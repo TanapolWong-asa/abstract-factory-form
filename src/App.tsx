@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./App.css";
+import { IntegrationSelector } from "./components/";
 import { IATIntegrationData, IWMIntegrationData } from "./interfaces";
 import { EditPartner } from "./pages";
 import ATFormFactory from "./pages/EditPartner/FormFactory/ATFormFactory";
@@ -16,7 +17,7 @@ enum Technology {
 }
 
 const App = () => {
-  const [technology, setTechnology] = useState<string>();
+  const [technology, setTechnology] = useState<string>("");
   const [factory, setFactory] = useState<FormFactory>();
   const {
     partnerId,
@@ -46,7 +47,7 @@ const App = () => {
         })
       );
     }
-  }, [technology]);
+  }, [technology, selectedIntegration]);
 
   return (
     <div className="App">
@@ -63,7 +64,15 @@ const App = () => {
           Select techonology...
         </option>
       </select>
-      {factory ? <EditPartner formFactory={factory} /> : <div>No Form</div>}
+      {technology !== "" && <IntegrationSelector technology={technology} />}
+      {
+        // HACK: don't check for null integration like this in dev (for quick hack only)
+        factory && selectedIntegration.integrationId !== "" ? (
+          <EditPartner formFactory={factory} />
+        ) : (
+          <div>No Form</div>
+        )
+      }
     </div>
   );
 };
