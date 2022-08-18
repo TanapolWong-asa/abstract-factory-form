@@ -50,7 +50,7 @@ const IntegrationSelector: FunctionComponent<IntegrationSelectorProps> = ({
           key={integration.integrationId}
           value={integration.integrationId}
         >
-          {integration.integrationName}
+          {integration.integrationName || "Untitled Integration"}
         </option>
       ))}
       <option value="default" disabled hidden>
