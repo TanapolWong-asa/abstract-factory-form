@@ -9,40 +9,14 @@ import InterfaceForm from "./InterfaceForm/InterfaceForm";
 import WMInterfaceForm from "./InterfaceForm/WMInterfaceForm";
 
 class WMFormFactory implements FormFactory {
-  props: Object = {};
-
-  constructor({
-    partnerId,
-    setPartnerId,
-    selectedIntegration,
-    setSelectedIntegration,
-  }: {
-    partnerId: string;
-    setPartnerId: Function;
-    selectedIntegration: IWMIntegrationData;
-    setSelectedIntegration: Function;
-  }) {
-    this.props = {
-      partnerId,
-      setPartnerId,
-      selectedIntegration,
-      setSelectedIntegration,
-    };
-  }
-
   createIntegrationForm(): IntegrationForm {
-    return new WMIntegrationForm({
-      partnerId: (this.props as any)["partnerId"],
-      setPartnerId: (this.props as any)["setPartnerId"],
-      selectedIntegration: (this.props as any)["selectedIntegration"],
-      setSelectedIntegration: (this.props as any)["setSelectedIntegration"],
-    });
+    return new WMIntegrationForm({});
   }
   createInterfaceForm(): InterfaceForm {
-    return new WMInterfaceForm(this.props);
+    return new WMInterfaceForm({});
   }
   createConnectionForm(): ConnectionForm {
-    return new WMConnectionForm(this.props);
+    return new WMConnectionForm({});
   }
 }
 

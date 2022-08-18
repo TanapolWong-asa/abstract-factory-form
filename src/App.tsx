@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./App.css";
 import { IntegrationSelector } from "./components/";
-import { IATIntegrationData, IWMIntegrationData } from "./interfaces";
+import { IATIntegrationData } from "./interfaces";
 import { EditPartner } from "./pages";
 import ATFormFactory from "./pages/EditPartner/FormFactory/ATFormFactory";
 import { FormFactory } from "./pages/EditPartner/FormFactory/FormFactory";
@@ -28,14 +28,7 @@ const App = () => {
 
   useEffect(() => {
     if (technology === Technology.WM) {
-      setFactory(
-        new WMFormFactory({
-          partnerId,
-          setPartnerId,
-          selectedIntegration: selectedIntegration as IWMIntegrationData,
-          setSelectedIntegration,
-        })
-      );
+      setFactory(new WMFormFactory());
     } else if (technology === Technology.AT) {
       // TODO: Edit this to follow WMFormFactory
       setFactory(

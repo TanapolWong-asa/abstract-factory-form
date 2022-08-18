@@ -16,39 +16,17 @@ import { InputType, RenderFormItemByType } from "../../Form";
 import IntegrationForm from "./IntegrationForm";
 
 class WMIntegrationForm extends IntegrationForm {
-  // protected generateIntegrationDraftKey(): string {
-  //   const {
-  //     partnerId,
-  //     selectedIntegration: { integrationId },
-  //   } = this.state; // FIXME: state change too late so selecting new integration will save it's data to the old one
-
-  //   // console.log(`${partnerId}-${integrationId}-WMIntegrationDraft`);
-  //   return `${partnerId}-${integrationId}-WMIntegrationDraft`;
-  // }
   render() {
-    return (
-      <Form
-        partnerId={this.state.partnerId}
-        // saveDraft={this.saveDraft} readDraft={this.readDraft}
-      />
-    );
+    return <Form />;
   }
 }
 WMIntegrationForm.contextType = SelectedIntegrationContext;
 
 export default WMIntegrationForm;
 
-interface FormProps {
-  partnerId: string;
-  // saveDraft: Function;
-  // readDraft: Function;
-}
-const Form: React.FC<FormProps> = ({
-  partnerId,
-}: // saveDraft,
-// readDraft,
-FormProps) => {
-  const { selectedIntegration, setSelectedIntegration } =
+interface FormProps {}
+const Form: React.FC<FormProps> = ({}: FormProps) => {
+  const { partnerId, selectedIntegration, setSelectedIntegration } =
     useContext<ISelectedIntegrationContext>(SelectedIntegrationContext);
   const { setIntegrations } =
     useContext<IIntegrationsContext>(IntegrationsContext);
