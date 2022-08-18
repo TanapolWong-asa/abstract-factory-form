@@ -27,8 +27,7 @@ export interface IWMIntegrationData extends IIntegrationData {
 export interface IWMIntegrationFormData extends IIntegrationFormData {
   technology: string;
   integrationName: string;
-
-  isDirty: boolean;
-  hasError: boolean;
-  dirtyFields: any;
 }
+
+export interface IATIntegrationData extends IIntegrationData {}
+export interface IATIntegrationFormData extends IIntegrationFormData {}

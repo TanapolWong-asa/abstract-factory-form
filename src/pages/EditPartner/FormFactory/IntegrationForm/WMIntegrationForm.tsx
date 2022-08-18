@@ -147,14 +147,18 @@ FormProps) => {
   // set form data to be draft data (first time only)
   useEffect(() => {
     updateSelectedIntegration(
-      preprocessIntegrationInfoFormData(context.selectedIntegration)
+      preprocessIntegrationInfoFormData(
+        context.selectedIntegration as IWMIntegrationData
+      )
     );
   }, []);
 
   // update form fields
   useEffect(() => {
     const integrationInfoFormData: IWMIntegrationFormData =
-      preprocessIntegrationInfoFormData(context.selectedIntegration);
+      preprocessIntegrationInfoFormData(
+        context.selectedIntegration as IWMIntegrationData
+      );
     const keys = Object.keys(integrationInfoFormData);
     formList.forEach((item: { formItemName: string; defaultValue: string }) => {
       keys.forEach((key: any) => {
@@ -187,7 +191,7 @@ FormProps) => {
       ...allDirtyFields,
     };
     const updatedWMIntegrationData: IWMIntegrationData = {
-      ...context.selectedIntegration,
+      ...(context.selectedIntegration as IWMIntegrationData),
       integrationName: integrationFormData.integrationName,
       isDirty: true,
       hasError: hasError,

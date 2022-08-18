@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./App.css";
+import { IATIntegrationData, IWMIntegrationData } from "./interfaces";
 import { EditPartner } from "./pages";
 import ATFormFactory from "./pages/EditPartner/FormFactory/ATFormFactory";
 import { FormFactory } from "./pages/EditPartner/FormFactory/FormFactory";
@@ -30,7 +31,7 @@ const App = () => {
         new WMFormFactory({
           partnerId,
           setPartnerId,
-          selectedIntegration,
+          selectedIntegration: selectedIntegration as IWMIntegrationData,
           setSelectedIntegration,
         })
       );
@@ -40,7 +41,7 @@ const App = () => {
         new ATFormFactory({
           partnerId,
           setPartnerId,
-          selectedIntegration,
+          selectedIntegration: selectedIntegration as IATIntegrationData,
           setSelectedIntegration,
         })
       );
