@@ -1,20 +1,16 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react'
 
-import { IIntegrationFormData } from '../../../../interfaces'
+import { ISelectedIntegrationContext } from '../../../../stores/selectedIntegration'
 import IntegrationForm from './IntegrationForm'
 
 class ATIntegrationForm extends IntegrationForm {
-	componentDidMount(): void {
-		throw new Error('Method not implemented.')
-	}
-
-	protected generateIntegrationDraftKey(): string {
-		throw new Error('Method not implemented.')
-	}
-
-	protected preprocessIntegrationInfoFormData(): IIntegrationFormData {
-		throw new Error('Method not implemented.')
+	public generateIntegrationDraftKey(): string {
+		const {
+			partnerId,
+			selectedIntegration: { integrationId },
+		} = this.context as ISelectedIntegrationContext
+		return `${partnerId}-${integrationId}-ATIntegrationDraft` // Recommended draft key pattern
 	}
 
 	render() {

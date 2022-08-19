@@ -10,6 +10,7 @@ import InterfaceForm from './InterfaceForm/InterfaceForm'
 import WMInterfaceForm from './InterfaceForm/WMInterfaceForm'
 
 class WMFormFactory implements FormFactory {
+	// must be render this way to trigger react's lifecycle method
 	createIntegrationForm(): IntegrationForm {
 		return (<WMIntegrationForm />) as unknown as IntegrationForm
 	}

@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { ReactNode, useCallback, useEffect, useState } from 'react'
 
 import ConnectionForm from './FormFactory/ConnectionForm/ConnectionForm'
 import { FormFactory } from './FormFactory/FormFactory'
@@ -15,11 +15,7 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 		null,
 	)
 
-	useEffect(() => {
-		setFormByStage()
-	}, [stage, formFactory])
-
-	const setFormByStage = () => {
+	const setFormByStage = useCallback(() => {
 		switch (stage) {
 			case 1:
 				setForm(formFactory.createIntegrationForm())
@@ -34,7 +30,11 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 				setForm(<div>NOT VALID STAGE</div>)
 				break
 		}
-	}
+	}, [stage, formFactory])
+
+	useEffect(() => {
+		setFormByStage()
+	}, [stage, formFactory, setFormByStage])
 
 	return (
 		<div>

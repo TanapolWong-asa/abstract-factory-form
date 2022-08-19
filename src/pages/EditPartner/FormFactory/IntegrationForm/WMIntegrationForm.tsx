@@ -12,12 +12,12 @@ import { InputType, RenderFormItemByType } from '../../Form'
 import IntegrationForm from './IntegrationForm'
 
 class WMIntegrationForm extends IntegrationForm {
-	protected generateIntegrationDraftKey(): string {
+	public generateIntegrationDraftKey(): string {
 		const {
 			partnerId,
 			selectedIntegration: { integrationId },
 		} = this.context as ISelectedIntegrationContext
-		return `${partnerId}-${integrationId}-WMIntegrationDraft`
+		return `${partnerId}-${integrationId}-WMIntegrationDraft` // Recommended draft key pattern
 	}
 
 	render() {
@@ -78,6 +78,7 @@ const Form: React.FC<FormProps> = ({ saveDraft, readDraft }) => {
 	}, [selectedIntegration])
 	useEffect(() => resetForm(), [resetForm])
 
+	// 'merge' draft data and form data together (drafted data have higher priority)
 	const preprocessIntegrationInfoFormData = (
 		selectedIntegration: IWMIntegrationData,
 	): IWMIntegrationFormData => {
@@ -107,7 +108,7 @@ const Form: React.FC<FormProps> = ({ saveDraft, readDraft }) => {
 		)
 	}, [])
 
-	// update form fields
+	// update form fields on UI
 	useEffect(() => {
 		const integrationInfoFormData: IWMIntegrationFormData = preprocessIntegrationInfoFormData(
 			selectedIntegration as IWMIntegrationData,
@@ -149,7 +150,11 @@ const Form: React.FC<FormProps> = ({ saveDraft, readDraft }) => {
 			errorFields: newErrorFields,
 		}
 		saveDraft(JSON.stringify(integrationFormData))
+
+		// Need to update these 2 separately since selectedIntegration store copy of the integration from integrations list
+		// save new data to selected integration
 		setSelectedIntegration(updatedWMIntegrationData)
+		// save new data to integration list (for dropdown selector UI)
 		setIntegrations((integrations) =>
 			integrations.map((integration) => {
 				if (integration.integrationId === selectedIntegration.integrationId) {
