@@ -18,7 +18,6 @@ const IntegrationSelector: FunctionComponent<IntegrationSelectorProps> = ({
 	const { setSelectedIntegration } = useContext<ISelectedIntegrationContext>(
 		SelectedIntegrationContext,
 	)
-
 	const [filteredIntegrations, setFilteredIntegrations] = useState<IntegrationType[]>([])
 
 	useEffect(() => {
@@ -44,7 +43,7 @@ const IntegrationSelector: FunctionComponent<IntegrationSelectorProps> = ({
 					{integration.integrationName || 'Untitled Integration'}
 				</option>
 			))}
-			<option value="default" disabled hidden>
+			<option value="default" hidden>
 				Select {technology} integration...
 			</option>
 		</select>

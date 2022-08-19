@@ -3,7 +3,7 @@ import './App.css'
 import React, { useContext, useEffect, useState } from 'react'
 
 import { IntegrationSelector } from './components'
-import { IATIntegrationData } from './interfaces'
+import TechnologySelector from './components/TechnologySelector'
 import { EditPartner } from './pages'
 import ATFormFactory from './pages/EditPartner/FormFactory/ATFormFactory'
 import { FormFactory } from './pages/EditPartner/FormFactory/FormFactory'
@@ -13,7 +13,7 @@ import {
 	SelectedIntegrationContext,
 } from './stores/selectedIntegration'
 
-enum Technology {
+export enum Technology {
 	WM = 'WM',
 	AT = 'AT',
 }
@@ -21,47 +21,33 @@ enum Technology {
 const App = () => {
 	const [technology, setTechnology] = useState<string>('')
 	const [factory, setFactory] = useState<FormFactory>()
-	const { partnerId, setPartnerId, selectedIntegration, setSelectedIntegration } =
-		useContext<ISelectedIntegrationContext>(SelectedIntegrationContext)
+	const { selectedIntegration, setSelectedIntegration } = useContext<ISelectedIntegrationContext>(
+		SelectedIntegrationContext,
+	)
 
 	useEffect(() => {
 		if (technology === Technology.WM) {
 			setFactory(new WMFormFactory())
 		} else if (technology === Technology.AT) {
 			// TODO: Edit this to follow WMFormFactory
-			setFactory(
-				new ATFormFactory({
-					partnerId,
-					setPartnerId,
-					selectedIntegration: selectedIntegration as IATIntegrationData,
-					setSelectedIntegration,
-				}),
-			)
+			setFactory(new ATFormFactory())
 		}
+		setSelectedIntegration(null)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [partnerId, technology, selectedIntegration])
+	}, [technology])
 
 	return (
 		<div className="App">
-			<select onChange={(e) => setTechnology(e.target.value)} defaultValue="default">
-				{Object.values(Technology).map((technology) => (
-					<option key={technology} value={technology}>
-						{technology}
-					</option>
-				))}
-				<option value="default" disabled hidden>
-					Select techonology...
-				</option>
-			</select>
+			<TechnologySelector
+				technologies={Object.keys(Technology)}
+				setTechnology={setTechnology}
+			/>
 			{technology !== '' && <IntegrationSelector technology={technology} />}
-			{
-				// HACK: don't check for null integration like this in dev (for quick hack only)
-				factory && selectedIntegration.integrationId !== '' ? (
-					<EditPartner formFactory={factory} />
-				) : (
-					<div>No Form</div>
-				)
-			}
+			{factory && selectedIntegration ? (
+				<EditPartner formFactory={factory} />
+			) : (
+				<div>No Form</div>
+			)}
 		</div>
 	)
 }
