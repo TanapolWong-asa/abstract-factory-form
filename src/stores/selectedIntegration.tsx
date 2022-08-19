@@ -2,7 +2,6 @@ import React, { createContext, FunctionComponent, SetStateAction, useState } fro
 
 import { IntegrationType } from '../pages/EditPartner/interfaces'
 
-// XXX: Add other tech integration interface here
 export interface ISelectedIntegrationContext {
 	partnerId: string
 	setPartnerId: React.Dispatch<SetStateAction<string>>

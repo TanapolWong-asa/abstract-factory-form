@@ -45,4 +45,33 @@ export interface IATIntegrationFormData extends IIntegrationFormData {
 	integrationName: string
 }
 
+// XXX: Add other tech integration here
+
 export type IntegrationType = IWMIntegrationData | IATIntegrationData
+
+// TODO: Change this
+export interface IInterfaceData {
+	lastModifiedDate?: string
+	lastModifiedBy?: string
+	createdDate?: string
+	createdBy?: string
+	newFlag?: boolean
+	isDirty?: boolean
+	hasError?: boolean
+	dirtyFields?: any
+	errorFields?: any
+}
+
+// TODO: Change this
+
+export interface IInterfaceFormData {
+	isDirty: boolean
+	hasError: boolean
+	dirtyFields: any
+}
+
+export interface IWMInterfaceData extends IInterfaceData {}
+export interface IATInterfaceData extends IInterfaceData {}
+
+// XXX: Add other tech interface here
+export type InterfaceType = IWMInterfaceData | IATInterfaceData
