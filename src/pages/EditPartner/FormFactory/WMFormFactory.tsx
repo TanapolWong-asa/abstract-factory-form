@@ -1,4 +1,5 @@
 /* eslint-disable class-methods-use-this */
+import React from 'react'
 
 import ConnectionForm from './ConnectionForm/ConnectionForm'
 import WMConnectionForm from './ConnectionForm/WMConnectionForm'
@@ -10,15 +11,15 @@ import WMInterfaceForm from './InterfaceForm/WMInterfaceForm'
 
 class WMFormFactory implements FormFactory {
 	createIntegrationForm(): IntegrationForm {
-		return new WMIntegrationForm({})
+		return (<WMIntegrationForm />) as unknown as IntegrationForm
 	}
 
 	createInterfaceForm(): InterfaceForm {
-		return new WMInterfaceForm({})
+		return (<WMInterfaceForm />) as unknown as InterfaceForm
 	}
 
 	createConnectionForm(): ConnectionForm {
-		return new WMConnectionForm({})
+		return (<WMConnectionForm />) as unknown as ConnectionForm
 	}
 }
 

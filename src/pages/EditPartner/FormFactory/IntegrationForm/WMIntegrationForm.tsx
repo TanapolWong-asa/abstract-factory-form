@@ -12,26 +12,30 @@ import { InputType, RenderFormItemByType } from '../../Form'
 import IntegrationForm from './IntegrationForm'
 
 class WMIntegrationForm extends IntegrationForm {
+	protected generateIntegrationDraftKey(): string {
+		const {
+			partnerId,
+			selectedIntegration: { integrationId },
+		} = this.context as ISelectedIntegrationContext
+		return `${partnerId}-${integrationId}-WMIntegrationDraft`
+	}
+
 	render() {
-		return <Form />
+		return <Form saveDraft={this.saveDraft} readDraft={this.readDraft} />
 	}
 }
 
 export default WMIntegrationForm
 
-interface FormProps {}
-const Form: React.FC<FormProps> = () => {
-	const { partnerId, selectedIntegration, setSelectedIntegration } =
-		useContext<ISelectedIntegrationContext>(SelectedIntegrationContext)
-	const { setIntegrations } = useContext<IIntegrationsContext>(IntegrationsContext)
-
-	const generateIntegrationDraftKey = useCallback(
-		() => `${partnerId}-${selectedIntegration.integrationId}-WMIntegrationDraft`,
-		[partnerId, selectedIntegration],
+interface FormProps {
+	saveDraft: (content: string) => void
+	readDraft: () => string | null
+}
+const Form: React.FC<FormProps> = ({ saveDraft, readDraft }) => {
+	const { selectedIntegration, setSelectedIntegration } = useContext<ISelectedIntegrationContext>(
+		SelectedIntegrationContext,
 	)
-	const saveDraft = (content: string) =>
-		localStorage.setItem(generateIntegrationDraftKey(), content)
-	const readDraft = () => localStorage.getItem(generateIntegrationDraftKey())
+	const { setIntegrations } = useContext<IIntegrationsContext>(IntegrationsContext)
 
 	const { register, setValue, getValues, formState, trigger } = useForm<IWMIntegrationFormData>()
 	const formList = [
@@ -91,9 +95,6 @@ const Form: React.FC<FormProps> = () => {
 			hasError: selectedIntegration.hasError || false,
 			dirtyFields: allDirtyFields,
 		}
-
-		// console.log("process", selectedIntegration.integrationId);
-
 		saveDraft(JSON.stringify(processedFormData))
 
 		return processedFormData
@@ -147,7 +148,6 @@ const Form: React.FC<FormProps> = () => {
 			dirtyFields: newDirtyFields,
 			errorFields: newErrorFields,
 		}
-		// console.log("update selectedInt", selectedIntegration.integrationId);
 		saveDraft(JSON.stringify(integrationFormData))
 		setSelectedIntegration(updatedWMIntegrationData)
 		setIntegrations((integrations) =>

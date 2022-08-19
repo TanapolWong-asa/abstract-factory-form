@@ -5,6 +5,10 @@ import { IIntegrationFormData } from '../../../../interfaces'
 import IntegrationForm from './IntegrationForm'
 
 class ATIntegrationForm extends IntegrationForm {
+	componentDidMount(): void {
+		throw new Error('Method not implemented.')
+	}
+
 	protected generateIntegrationDraftKey(): string {
 		throw new Error('Method not implemented.')
 	}
