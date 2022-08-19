@@ -1,4 +1,4 @@
-import { IATIntegrationData, IWMIntegrationData } from '../interfaces'
+import { IATIntegrationData, IWMIntegrationData } from '../pages/EditPartner/interfaces'
 
 export const INTEGRATIONS: (IWMIntegrationData | IATIntegrationData)[] = [
 	{

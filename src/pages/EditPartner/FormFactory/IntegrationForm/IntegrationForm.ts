@@ -2,13 +2,25 @@
 import React from 'react'
 
 import { SelectedIntegrationContext } from '../../../../stores/selectedIntegration'
+import { FormItem } from '../../Form/interfaces'
+import { IntegrationDataType } from '../../Form/reusableForm'
+import { IIntegrationFormData } from '../../interfaces'
 import DraftableForm from '../DraftableForm'
 
-// This class for now act like a marker interface (might add something later)
-// TODO: Add preprocessIntegrationInfoFormData as abstract method?
-// TODO: Add generateFormList()?
 abstract class IntegrationForm extends DraftableForm {
 	protected currentStage = 1 // might be useless
+
+	constructor(props: any) {
+		super(props)
+		this.preprocessIntegrationInfoFormData = this.preprocessIntegrationInfoFormData.bind(this)
+		this.generateFormList = this.generateFormList.bind(this)
+	}
+
+	protected abstract preprocessIntegrationInfoFormData(
+		selectedIntegration: IntegrationDataType,
+	): IIntegrationFormData
+
+	protected abstract generateFormList(): FormItem[]
 }
 IntegrationForm.contextType = SelectedIntegrationContext
 

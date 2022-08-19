@@ -1,17 +1,17 @@
 import React, { useCallback, useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
-import {
-	IATIntegrationData,
-	IATIntegrationFormData,
-	IWMIntegrationData,
-	IWMIntegrationFormData,
-} from '../../../interfaces'
 import { IIntegrationsContext, IntegrationsContext } from '../../../stores/intergrations'
 import {
 	ISelectedIntegrationContext,
 	SelectedIntegrationContext,
 } from '../../../stores/selectedIntegration'
+import {
+	IATIntegrationData,
+	IATIntegrationFormData,
+	IWMIntegrationData,
+	IWMIntegrationFormData,
+} from '../interfaces'
 import { InputType, RenderFormItemByType } from '.'
 
 // Add more form type here

@@ -1,6 +1,6 @@
 import React, { createContext, FunctionComponent, SetStateAction, useState } from 'react'
 
-import { IntegrationType } from '../interfaces'
+import { IntegrationType } from '../pages/EditPartner/interfaces'
 
 // XXX: Add other tech integration interface here
 export interface ISelectedIntegrationContext {

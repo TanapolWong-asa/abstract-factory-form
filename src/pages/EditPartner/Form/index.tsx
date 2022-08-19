@@ -5,7 +5,7 @@
 import React, { useEffect, useState } from 'react'
 
 export type InputType = 'text' | 'select' | 'checkbox' | 'textarea' | 'file' | 'multiplefiles'
-type option = {
+export type option = {
 	label: string
 	value: string
 	disabled?: boolean

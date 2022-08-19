@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 
-import { IntegrationType } from '../../interfaces'
+import { IntegrationType } from '../../pages/EditPartner/interfaces'
 import { IIntegrationsContext, IntegrationsContext } from '../../stores/intergrations'
 import {
 	ISelectedIntegrationContext,

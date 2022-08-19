@@ -29,7 +29,6 @@ const App = () => {
 		if (technology === Technology.WM) {
 			setFactory(new WMFormFactory())
 		} else if (technology === Technology.AT) {
-			// TODO: Edit this to follow WMFormFactory
 			setFactory(new ATFormFactory())
 		}
 		setSelectedIntegration(null)
@@ -46,7 +45,7 @@ const App = () => {
 			{factory && selectedIntegration ? (
 				<EditPartner formFactory={factory} />
 			) : (
-				<div>No Form</div>
+				<div>Select your integration from dropdown</div>
 			)}
 		</div>
 	)
