@@ -1,15 +1,16 @@
-import React, { FunctionComponent, ReactNode } from "react";
-import { IntegrationsProvider } from "./intergrations";
-import { SelectedIntegrationProvider } from "./selectedIntegration";
+import React, { FunctionComponent, ReactNode } from 'react'
+
+import { IntegrationsProvider } from './intergrations'
+import { SelectedIntegrationProvider } from './selectedIntegration'
 
 interface StoreProviderProps {
-  children: ReactNode;
+	children: ReactNode
 }
 
 export const StoreProvider: FunctionComponent<StoreProviderProps> = ({
-  children,
+	children,
 }: StoreProviderProps) => (
-  <IntegrationsProvider>
-    <SelectedIntegrationProvider>{children}</SelectedIntegrationProvider>
-  </IntegrationsProvider>
-);
+	<IntegrationsProvider>
+		<SelectedIntegrationProvider>{children}</SelectedIntegrationProvider>
+	</IntegrationsProvider>
+)

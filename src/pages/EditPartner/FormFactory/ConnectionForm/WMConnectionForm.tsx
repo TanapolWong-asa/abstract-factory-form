@@ -1,9 +1,11 @@
-import ConnectionForm from "./ConnectionForm";
+import React from 'react'
+
+import ConnectionForm from './ConnectionForm'
 
 class WMConnectionForm extends ConnectionForm {
-  render() {
-    return <div>WMConnectionForm</div>;
-  }
+	render() {
+		return <div>WMConnectionForm</div>
+	}
 }
 
-export default WMConnectionForm;
+export default WMConnectionForm

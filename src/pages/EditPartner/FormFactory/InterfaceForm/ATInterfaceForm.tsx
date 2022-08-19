@@ -1,9 +1,11 @@
-import InterfaceForm from "./InterfaceForm";
+import React from 'react'
+
+import InterfaceForm from './InterfaceForm'
 
 class ATInterfaceForm extends InterfaceForm {
-  render() {
-    return <div>ATInterfaceForm</div>;
-  }
+	render() {
+		return <div>ATInterfaceForm</div>
+	}
 }
 
-export default ATInterfaceForm;
+export default ATInterfaceForm

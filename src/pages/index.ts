@@ -1,1 +1,1 @@
-export { default as EditPartner } from "./EditPartner";
+export { default as EditPartner } from './EditPartner'

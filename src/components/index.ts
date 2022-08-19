@@ -1,1 +1,1 @@
-export { default as IntegrationSelector } from "./IntegrationSelector";
+export { default as IntegrationSelector } from './IntegrationSelector'

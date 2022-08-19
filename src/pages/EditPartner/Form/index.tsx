@@ -3,7 +3,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable import/no-cycle */
 import React, { useEffect, useState } from 'react'
-import { Control } from 'react-hook-form'
 
 export type InputType = 'text' | 'select' | 'checkbox' | 'textarea' | 'file' | 'multiplefiles'
 type option = {
@@ -23,6 +22,7 @@ export function convertStringToDate(s: string | null | Date) {
 	return null
 }
 interface RenderFormItemByTypeProps {
+	// eslint-disable-next-line react/no-unused-prop-types
 	id?: number
 	inputType: InputType
 	label: string
@@ -30,8 +30,6 @@ interface RenderFormItemByTypeProps {
 	className?: string
 	formItemName?: string
 	register: any // (Ref: any, RegisterOptions?: any) => void
-	control?: Control<any>
-	callback?: any
 	formState: any
 	required: boolean
 	disabled?: boolean
@@ -39,7 +37,6 @@ interface RenderFormItemByTypeProps {
 	errorMessage: string
 	// isDirty: boolean
 	dirtyFields: any
-	children?: any
 	maxLength?: number
 	accept?: string
 }
@@ -51,15 +48,12 @@ export const RenderFormItemByType: React.FC<RenderFormItemByTypeProps> = ({
 	options,
 	formItemName,
 	register,
-	control,
-	callback,
 	formState,
 	required,
 	disabled,
 	regex,
 	errorMessage,
 	dirtyFields,
-	children,
 	maxLength,
 	accept,
 }) => {

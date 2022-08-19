@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -32,8 +33,7 @@ const Form: React.FC<FormProps> = () => {
 		localStorage.setItem(generateIntegrationDraftKey(), content)
 	const readDraft = () => localStorage.getItem(generateIntegrationDraftKey())
 
-	const { register, setValue, getValues, control, formState, trigger } =
-		useForm<IWMIntegrationFormData>()
+	const { register, setValue, getValues, formState, trigger } = useForm<IWMIntegrationFormData>()
 	const formList = [
 		{
 			id: 1,
@@ -184,7 +184,6 @@ const Form: React.FC<FormProps> = () => {
 						disabled={formItem.disabled}
 						errorMessage={formItem.errorMessage}
 						dirtyFields={selectedIntegration.dirtyFields}
-						control={control}
 					/>
 				)
 			})}

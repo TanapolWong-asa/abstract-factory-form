@@ -1,9 +1,11 @@
-import InterfaceForm from "./InterfaceForm";
+import React from 'react'
+
+import InterfaceForm from './InterfaceForm'
 
 class WMInterfaceForm extends InterfaceForm {
-  render() {
-    return <div>WMInterfaceForm</div>;
-  }
+	render() {
+		return <div>WMInterfaceForm</div>
+	}
 }
 
-export default WMInterfaceForm;
+export default WMInterfaceForm
