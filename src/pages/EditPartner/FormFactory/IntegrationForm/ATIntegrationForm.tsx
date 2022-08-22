@@ -3,7 +3,7 @@ import React from 'react'
 
 import { ISelectedIntegrationContext } from '../../../../stores/selectedIntegration'
 import { FormItem } from '../../Form/interfaces'
-import ReusableForm from '../../Form/reusableForm'
+import { ReusableIntegrationForm } from '../../Form/reusableForm'
 import { IATIntegrationData, IATIntegrationFormData, IntegrationType } from '../../interfaces'
 import IntegrationForm from './IntegrationForm'
 
@@ -71,18 +71,18 @@ class ATIntegrationForm extends IntegrationForm {
 		]
 	}
 
-	public generateIntegrationDraftKey(): string {
+	public generateDraftKey(): string {
 		const { partnerId, selectedIntegration } = this.context as ISelectedIntegrationContext
 		return `${partnerId}-${selectedIntegration?.integrationId}-ATIntegrationDraft` // Recommended draft key pattern
 	}
 
 	render() {
 		return (
-			<ReusableForm
+			<ReusableIntegrationForm
 				saveDraft={this.saveDraft}
 				readDraft={this.readDraft}
 				formList={this.generateFormList()}
-				preprocessFormData={this.preprocessIntegrationInfoFormData}
+				preprocessIntegrationInfoFormData={this.preprocessIntegrationInfoFormData}
 			/>
 		)
 	}

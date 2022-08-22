@@ -11,6 +11,7 @@ import {
 	ISelectedIntegrationContext,
 	SelectedIntegrationContext,
 } from './stores/selectedIntegration'
+import { ISelectedInterfaceContext, SelectedInterfaceContext } from './stores/selectedInterface'
 
 export enum Technology {
 	WM = 'WM',
@@ -23,6 +24,7 @@ const App = () => {
 	const { selectedIntegration, setSelectedIntegration } = useContext<ISelectedIntegrationContext>(
 		SelectedIntegrationContext,
 	)
+	const { setSelectedInterface } = useContext<ISelectedInterfaceContext>(SelectedInterfaceContext)
 
 	useEffect(() => {
 		if (technology === Technology.WM) {
@@ -31,6 +33,7 @@ const App = () => {
 			setFormFactory(new ATFormFactory())
 		}
 		setSelectedIntegration(null)
+		setSelectedInterface(null)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [technology])
 
@@ -42,11 +45,7 @@ const App = () => {
 			/>
 			{technology !== '' && <IntegrationSelector technology={technology} />}
 			{selectedIntegration && <InterfaceSelector technology={technology} />}
-			{formFactory && selectedIntegration ? (
-				<EditPartner formFactory={formFactory} />
-			) : (
-				<div>Select your integration from dropdown</div>
-			)}
+			{formFactory && <EditPartner formFactory={formFactory} />}
 		</div>
 	)
 }

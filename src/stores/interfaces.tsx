@@ -14,11 +14,11 @@ export const InterfacesContext = createContext<IInterfacesContext>({
 interface InterfacesProviderProps {}
 
 export const InterfacesProvider: FunctionComponent<InterfacesProviderProps> = (props: any) => {
-	const [integrations, setIntegrations] = useState<InterfaceType[]>([]) // TODO: Change (business) interfaces according to selectedIntegration
+	const [interfaces, setInterfaces] = useState<InterfaceType[]>([])
 
 	const value: IInterfacesContext = {
-		interfaces: integrations,
-		setInterfaces: setIntegrations,
+		interfaces,
+		setInterfaces,
 	}
 	return <InterfacesContext.Provider value={value}>{props.children}</InterfacesContext.Provider>
 }

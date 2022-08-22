@@ -43,7 +43,7 @@ export type IntegrationType = IWMIntegrationData | IATIntegrationData
 export interface IInterfaceData {
 	interfaceId: string
 	interfaceName: string
-	connections: any[] // TODO: change to IWMConnectionData |IATConnectionData=
+	connections: IConnectionData[]
 
 	lastModifiedDate?: string
 	lastModifiedBy?: string
@@ -57,6 +57,7 @@ export interface IInterfaceData {
 }
 
 export interface IInterfaceFormData {
+	interfaceName: string
 	isDirty: boolean
 	hasError: boolean
 	dirtyFields: any
@@ -82,3 +83,27 @@ export interface IATInterfaceFormData extends IInterfaceFormData {
 
 // XXX: Add other tech interface here
 export type InterfaceType = IWMInterfaceData | IATInterfaceData
+
+export interface IConnectionData {
+	lastModifiedDate?: string
+	lastModifiedBy?: string
+	createdDate?: string
+	createdBy?: string
+	newFlag?: boolean
+	isDirty?: boolean
+	hasError?: boolean
+	dirtyFields?: any
+	errorFields?: any
+}
+export interface IConnectionFormData {
+	isDirty: boolean
+	hasError: boolean
+	dirtyFields: any
+}
+
+export interface IWMConnectionData extends IConnectionData {}
+export interface IWMConnectionFormData extends IConnectionFormData {}
+export interface IATConnectionData extends IConnectionData {}
+export interface IATConnectionFormData extends IConnectionFormData {}
+
+export type ConnectionData = IWMConnectionData | IATConnectionData

@@ -4,7 +4,7 @@ import React from 'react'
 
 import { ISelectedIntegrationContext } from '../../../../stores/selectedIntegration'
 import { FormItem } from '../../Form/interfaces'
-import ReusableForm from '../../Form/reusableForm'
+import { ReusableIntegrationForm } from '../../Form/reusableForm'
 import { IntegrationType, IWMIntegrationData, IWMIntegrationFormData } from '../../interfaces'
 import IntegrationForm from './IntegrationForm'
 
@@ -46,7 +46,7 @@ class WMIntegrationForm extends IntegrationForm {
 	// this generateDraftKey will take 2 parameters: partnerId, integrationId
 	// When we'd like to change the parameter list, every caller must be edit as well which will cause cascading change
 	// While we stick to this no parameter way, we can use the context to get the data and the 'API' would still looks the same to caller
-	public generateIntegrationDraftKey(): string {
+	public generateDraftKey(): string {
 		const { partnerId, selectedIntegration } = this.context as ISelectedIntegrationContext
 		return `${partnerId}-${selectedIntegration?.integrationId}-WMIntegrationDraft` // Recommended draft key pattern
 	}
@@ -80,11 +80,11 @@ class WMIntegrationForm extends IntegrationForm {
 	// Also, we might need to re-design lots of function parameters+interfaces
 	render() {
 		return (
-			<ReusableForm
+			<ReusableIntegrationForm
 				saveDraft={this.saveDraft}
 				readDraft={this.readDraft}
 				formList={this.generateFormList()}
-				preprocessFormData={this.preprocessIntegrationInfoFormData}
+				preprocessIntegrationInfoFormData={this.preprocessIntegrationInfoFormData}
 			/>
 		)
 	}

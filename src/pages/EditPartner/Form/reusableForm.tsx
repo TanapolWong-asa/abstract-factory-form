@@ -6,32 +6,43 @@ import {
 	ISelectedIntegrationContext,
 	SelectedIntegrationContext,
 } from '../../../stores/selectedIntegration'
-import { IATIntegrationFormData, IntegrationType, IWMIntegrationFormData } from '../interfaces'
+import {
+	ISelectedInterfaceContext,
+	SelectedInterfaceContext,
+} from '../../../stores/selectedInterface'
+import {
+	IATIntegrationFormData,
+	IATInterfaceFormData,
+	IntegrationType,
+	InterfaceType,
+	IWMIntegrationFormData,
+	IWMInterfaceFormData,
+} from '../interfaces'
 import { InputType, RenderFormItemByType } from '.'
 
 // Add more form type here
-export type FormType = IWMIntegrationFormData | IATIntegrationFormData
+export type IntegrationFormType = IWMIntegrationFormData | IATIntegrationFormData
+export type InterfaceFormType = IWMInterfaceFormData | IATInterfaceFormData
 
-interface ReusableFormProps {
+interface ReusableIntegrationFormProps {
 	saveDraft: (content: string) => void
 	readDraft: () => string | null
 	formList: any[]
-	preprocessFormData: (selectedIntegration: IntegrationType) => FormType
+	preprocessIntegrationInfoFormData: (selectedIntegration: IntegrationType) => IntegrationFormType
 }
 
-const ReusableForm: React.FC<ReusableFormProps> = ({
+export const ReusableIntegrationForm: React.FC<ReusableIntegrationFormProps> = ({
 	saveDraft,
 	readDraft,
 	formList,
-	preprocessFormData,
-}: ReusableFormProps) => {
-	// TODO: Stop using context but pass as props?
+	preprocessIntegrationInfoFormData,
+}: ReusableIntegrationFormProps) => {
 	const { selectedIntegration, setSelectedIntegration } = useContext<ISelectedIntegrationContext>(
 		SelectedIntegrationContext,
 	)
 	const { setIntegrations } = useContext<IIntegrationsContext>(IntegrationsContext)
 
-	const { register, setValue, getValues, formState, trigger } = useForm<FormType>()
+	const { register, setValue, getValues, formState, trigger } = useForm<IntegrationFormType>()
 
 	const getKeyValue =
 		<T extends object, U extends keyof T>(obj: T) =>
@@ -53,38 +64,17 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 	}, [selectedIntegration])
 	useEffect(() => resetForm(), [resetForm])
 
-	// for this solution, preprocess... must me moved to upper level since processedFormData is processed differently
-	// const preprocessIntegrationInfoFormData = (
-	// 	selectedIntegration: IWMIntegrationData,
-	// ): FormDataType => {
-	// 	const draft = JSON.parse(readDraft() || '{}')
-	// 	const allDirtyFields = {
-	// 		...selectedIntegration.dirtyFields,
-	// 		...(draft as any)['dirtyFields'],
-	// 	}
-
-	// 	const processedFormData: FormDataType = {
-	// 		technology: selectedIntegration.technology,
-	// 		integrationName:
-	// 			(draft as any)['integrationName'] || selectedIntegration.integrationName,
-	// 		isDirty: selectedIntegration.isDirty || false,
-	// 		hasError: selectedIntegration.hasError || false,
-	// 		dirtyFields: allDirtyFields,
-	// 	}
-	// 	saveDraft(JSON.stringify(processedFormData))
-
-	// 	return processedFormData
-	// }
-
 	// set form data to be draft data (first time only)
 	useEffect(() => {
-		updateSelectedIntegration(preprocessFormData(selectedIntegration as IntegrationType))
+		updateSelectedIntegration(
+			preprocessIntegrationInfoFormData(selectedIntegration as IntegrationType),
+		)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	// update form fields on UI
 	useEffect(() => {
-		const integrationInfoFormData: FormType = preprocessFormData(
+		const integrationInfoFormData: IntegrationFormType = preprocessIntegrationInfoFormData(
 			selectedIntegration as IntegrationType,
 		)
 		const keys = Object.keys(integrationInfoFormData)
@@ -92,7 +82,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 			keys.forEach((key: any) => {
 				if (key === item.formItemName) {
 					const value: string = getKeyValue(integrationInfoFormData)(key)
-					const k = item.formItemName as keyof FormType as string
+					const k = item.formItemName as keyof IntegrationFormType as string
 					setValue(k, value || item.defaultValue)
 				}
 			})
@@ -102,7 +92,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 	}, [selectedIntegration, formList])
 
 	// update selectedIntegration in context
-	const updateSelectedIntegration = (integrationFormData: FormType) => {
+	const updateSelectedIntegration = (integrationFormData: IntegrationFormType) => {
 		if (selectedIntegration === null) return
 
 		const draft = JSON.parse(readDraft() || '{}')
@@ -118,7 +108,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 			...formState.dirtyFields,
 			...allDirtyFields,
 		}
-		const updatedWMIntegrationData: IntegrationType = {
+		const updatedIntegrationData: IntegrationType = {
 			...(selectedIntegration as IntegrationType),
 			integrationName: integrationFormData.integrationName,
 			isDirty: true,
@@ -130,12 +120,12 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 
 		// Need to update these 2 separately since selectedIntegration store copy of the integration from integrations list
 		// save new data to selected integration
-		setSelectedIntegration(updatedWMIntegrationData)
+		setSelectedIntegration(updatedIntegrationData)
 		// save new data to integration list (for dropdown selector UI)
 		setIntegrations((integrations) =>
 			integrations.map((integration) => {
 				if (integration.integrationId === selectedIntegration.integrationId) {
-					return updatedWMIntegrationData
+					return updatedIntegrationData
 				}
 				return integration
 			}),
@@ -146,7 +136,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 		<form
 			onChange={() => {
 				trigger()
-				updateSelectedIntegration(getValues() as FormType)
+				updateSelectedIntegration(getValues() as IntegrationFormType)
 			}}
 		>
 			{formList.map((formItem: any) => {
@@ -173,4 +163,157 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 	)
 }
 
-export default ReusableForm
+interface ReusableInterfaceFormProps {
+	saveDraft: (content: string) => void
+	readDraft: () => string | null
+	formList: any[]
+	preprocessInterfaceInfoFormData: (selectedInterface: InterfaceType) => InterfaceFormType
+}
+
+export const ReusableInterfaceForm: React.FunctionComponent<ReusableInterfaceFormProps> = ({
+	saveDraft,
+	readDraft,
+	formList,
+	preprocessInterfaceInfoFormData,
+}: ReusableInterfaceFormProps) => {
+	const { selectedIntegration, setSelectedIntegration } = useContext<ISelectedIntegrationContext>(
+		SelectedIntegrationContext,
+	)
+	const { setIntegrations } = useContext<IIntegrationsContext>(IntegrationsContext)
+	const { selectedInterface, setSelectedInterface } =
+		useContext<ISelectedInterfaceContext>(SelectedInterfaceContext)
+
+	const { register, setValue, getValues, formState, trigger } = useForm<InterfaceFormType>()
+
+	const getKeyValue =
+		<T extends object, U extends keyof T>(obj: T) =>
+		(key: U) =>
+			obj[key]
+
+	const resetForm = useCallback(() => {
+		const isDirty: boolean =
+			(selectedInterface && (selectedInterface.isDirty || selectedInterface.hasError)) ||
+			false
+		if (isDirty === true) {
+			trigger()
+		} else {
+			formState.errors = {}
+			formState.isDirty = false
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedIntegration, selectedInterface])
+	useEffect(() => resetForm(), [resetForm])
+
+	// set form data to be draft data (first time only)
+	useEffect(() => {
+		updateSelectedInterface(preprocessInterfaceInfoFormData(selectedInterface as InterfaceType))
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	// update form fields on UI
+	useEffect(() => {
+		const interfaceInfoFormData = preprocessInterfaceInfoFormData(
+			selectedInterface as InterfaceType,
+		)
+		const keys = Object.keys(interfaceInfoFormData)
+		formList.forEach((item: { formItemName: string; defaultValue: string }) => {
+			keys.forEach((key: any) => {
+				if (key === item.formItemName) {
+					const value: string = getKeyValue(interfaceInfoFormData)(key)
+					const k = item.formItemName as keyof InterfaceFormType as string
+					setValue(k, value || item.defaultValue)
+				}
+			})
+		})
+		resetForm()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedIntegration, selectedInterface, formList])
+
+	const updateSelectedInterface = (interfaceFormData: InterfaceFormType) => {
+		if (selectedInterface === null) return
+
+		const draft = JSON.parse(readDraft() || '{}')
+		const allDirtyFields = {
+			...(interfaceFormData.dirtyFields || {}),
+			...(draft as any)['dirtyFields'],
+		}
+
+		const hasError = Object.keys(formState.errors).length !== 0
+		const newErrorFields = Object.keys(formState.errors) || []
+		const newDirtyFields = {
+			...selectedInterface.dirtyFields,
+			...formState.dirtyFields,
+			...allDirtyFields,
+		}
+		const updatedInterfaceData: InterfaceType = {
+			...(selectedInterface as InterfaceType),
+			interfaceName: interfaceFormData.interfaceName,
+			isDirty: true,
+			hasError,
+			dirtyFields: newDirtyFields,
+			errorFields: newErrorFields,
+		}
+		saveDraft(JSON.stringify(interfaceFormData))
+
+		// TODO: Fix null assertion
+		const updatedIntegrationData: IntegrationType = {
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			...selectedIntegration!,
+			interfaces: {
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				interfaceList: selectedIntegration!.interfaces.interfaceList.map(
+					(techInterface) => {
+						if (techInterface.interfaceId === selectedInterface.interfaceId) {
+							return updatedInterfaceData
+						}
+						return techInterface
+					},
+				),
+			},
+		}
+
+		// Need to update these 2 separately since selectedIntegration store copy of the integration from integrations list
+		// save new data to selected integration
+		setSelectedInterface(updatedInterfaceData)
+		setSelectedIntegration(updatedIntegrationData)
+		// save new data to integration list (for dropdown selector UI)
+		setIntegrations((integrations) =>
+			integrations.map((integration) => {
+				if (integration.integrationId === selectedInterface.interfaceId) {
+					return updatedIntegrationData
+				}
+				return integration
+			}),
+		)
+	}
+
+	return (
+		<form
+			onChange={() => {
+				trigger()
+				updateSelectedInterface(getValues() as InterfaceFormType)
+			}}
+		>
+			{formList.map((formItem: any) => {
+				const inputType = formItem.inputType as InputType
+				return (
+					<RenderFormItemByType
+						register={register}
+						formItemName={formItem.formItemName}
+						key={formItem.id}
+						className="mb-2"
+						inputType={inputType}
+						options={formItem.options}
+						label={formItem.label}
+						formState={formState}
+						required={formItem.required}
+						regex={formItem.regex}
+						disabled={formItem.disabled}
+						errorMessage={formItem.errorMessage}
+						dirtyFields={(selectedIntegration && selectedIntegration.dirtyFields) || {}}
+					/>
+				)
+			})}
+		</form>
+	)
+}

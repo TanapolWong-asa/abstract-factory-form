@@ -39,7 +39,10 @@ const IntegrationSelector: FunctionComponent<IntegrationSelectorProps> = ({
 			defaultValue="default"
 		>
 			{filteredIntegrations.map((integration) => (
-				<option key={integration.integrationId} value={integration.integrationId}>
+				<option
+					key={`integration${integration.integrationId}`}
+					value={integration.integrationId}
+				>
 					{integration.integrationName || 'Untitled Integration'}
 				</option>
 			))}

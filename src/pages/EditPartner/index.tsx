@@ -4,6 +4,7 @@ import {
 	ISelectedIntegrationContext,
 	SelectedIntegrationContext,
 } from '../../stores/selectedIntegration'
+import { ISelectedInterfaceContext, SelectedInterfaceContext } from '../../stores/selectedInterface'
 import ConnectionForm from './FormFactory/ConnectionForm/ConnectionForm'
 import FormFactory from './FormFactory/FormFactory'
 import IntegrationForm from './FormFactory/IntegrationForm/IntegrationForm'
@@ -21,14 +22,18 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 	const { selectedIntegration } = useContext<ISelectedIntegrationContext>(
 		SelectedIntegrationContext,
 	)
+	const { selectedInterface } = useContext<ISelectedInterfaceContext>(SelectedInterfaceContext)
 
+	// FIXME: Sometimes form is not render although selectedIntegration/selectedInterface is no longer null
 	const setFormByStage = useCallback(() => {
 		switch (stage) {
 			case 1:
-				setForm(formFactory.createIntegrationForm())
+				if (!selectedIntegration) setForm(<div>Select an integration</div>)
+				else setForm(formFactory.createIntegrationForm())
 				break
 			case 2:
-				setForm(formFactory.createInterfaceForm())
+				if (!selectedInterface) setForm(<div>Select an interface</div>)
+				else setForm(formFactory.createInterfaceForm())
 				break
 			case 3:
 				setForm(formFactory.createConnectionForm())
@@ -37,7 +42,7 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 				setForm(<div>NOT VALID STAGE</div>)
 				break
 		}
-	}, [stage, formFactory])
+	}, [stage, formFactory, selectedIntegration, selectedInterface])
 
 	useEffect(() => {
 		setFormByStage()
@@ -46,6 +51,9 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 	useEffect(() => {
 		setStage(1)
 	}, [selectedIntegration?.integrationId])
+	useEffect(() => {
+		setStage(2)
+	}, [selectedInterface?.interfaceId])
 
 	const NextButton = () => (
 		<button
