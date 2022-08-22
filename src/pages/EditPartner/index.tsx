@@ -1,5 +1,9 @@
-import React, { ReactNode, useCallback, useEffect, useState } from 'react'
+import React, { ReactNode, useCallback, useContext, useEffect, useState } from 'react'
 
+import {
+	ISelectedIntegrationContext,
+	SelectedIntegrationContext,
+} from '../../stores/selectedIntegration'
 import ConnectionForm from './FormFactory/ConnectionForm/ConnectionForm'
 import { FormFactory } from './FormFactory/FormFactory'
 import IntegrationForm from './FormFactory/IntegrationForm/IntegrationForm'
@@ -13,6 +17,9 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 	const [stage, setStage] = useState<number>(1)
 	const [form, setForm] = useState<IntegrationForm | InterfaceForm | ConnectionForm | ReactNode>(
 		null,
+	)
+	const { selectedIntegration } = useContext<ISelectedIntegrationContext>(
+		SelectedIntegrationContext,
 	)
 
 	const setFormByStage = useCallback(() => {
@@ -36,23 +43,39 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 		setFormByStage()
 	}, [stage, formFactory, setFormByStage])
 
+	useEffect(() => {
+		setStage(1)
+	}, [selectedIntegration?.integrationId])
+
+	const NextButton = () => (
+		<button
+			type="button"
+			onClick={() => {
+				setStage(stage + 1)
+			}}
+		>
+			Next Stage
+		</button>
+	)
+
+	const BackButton = () => (
+		<button
+			type="button"
+			onClick={() => {
+				setStage(stage - 1)
+			}}
+		>
+			Prev Stage
+		</button>
+	)
+
 	return (
 		<div>
 			<>
 				Edit Partner
 				{form}
-				<button
-					type="button"
-					onClick={() => {
-						if (stage >= 3) {
-							setStage(1)
-						} else {
-							setStage(stage + 1)
-						}
-					}}
-				>
-					Next Stage
-				</button>
+				{stage > 1 ? <BackButton /> : null}
+				{stage < 3 ? <NextButton /> : null}
 			</>
 		</div>
 	)

@@ -4,8 +4,8 @@ import React from 'react'
 
 import { ISelectedIntegrationContext } from '../../../../stores/selectedIntegration'
 import { FormItem } from '../../Form/interfaces'
-import ReusableForm, { IntegrationDataType } from '../../Form/reusableForm'
-import { IWMIntegrationFormData } from '../../interfaces'
+import ReusableForm from '../../Form/reusableForm'
+import { IntegrationType, IWMIntegrationData, IWMIntegrationFormData } from '../../interfaces'
 import IntegrationForm from './IntegrationForm'
 
 class WMIntegrationForm extends IntegrationForm {
@@ -53,20 +53,21 @@ class WMIntegrationForm extends IntegrationForm {
 
 	// This function will merge draft with fetched data (draft data get higher priority)
 	protected preprocessIntegrationInfoFormData(
-		selectedIntegration: IntegrationDataType,
+		selectedIntegration: IntegrationType,
 	): IWMIntegrationFormData {
+		const selectedWMIntegration = selectedIntegration as IWMIntegrationData
 		const draft = JSON.parse(this.readDraft() || '{}')
 		const allDirtyFields = {
-			...selectedIntegration.dirtyFields,
+			...selectedWMIntegration.dirtyFields,
 			...(draft as any)['dirtyFields'],
 		}
 
 		const processedFormData: IWMIntegrationFormData = {
-			technology: selectedIntegration.technology,
+			technology: selectedWMIntegration.technology,
 			integrationName:
-				(draft as any)['integrationName'] || selectedIntegration.integrationName,
-			isDirty: selectedIntegration.isDirty || false,
-			hasError: selectedIntegration.hasError || false,
+				(draft as any)['integrationName'] || selectedWMIntegration.integrationName,
+			isDirty: selectedWMIntegration.isDirty || false,
+			hasError: selectedWMIntegration.hasError || false,
 			dirtyFields: allDirtyFields,
 		}
 		this.saveDraft(JSON.stringify(processedFormData))

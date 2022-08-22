@@ -6,23 +6,17 @@ import {
 	ISelectedIntegrationContext,
 	SelectedIntegrationContext,
 } from '../../../stores/selectedIntegration'
-import {
-	IATIntegrationData,
-	IATIntegrationFormData,
-	IWMIntegrationData,
-	IWMIntegrationFormData,
-} from '../interfaces'
+import { IATIntegrationFormData, IntegrationType, IWMIntegrationFormData } from '../interfaces'
 import { InputType, RenderFormItemByType } from '.'
 
 // Add more form type here
-export type FormDataType = IWMIntegrationFormData | IATIntegrationFormData
-export type IntegrationDataType = IWMIntegrationData | IATIntegrationData
+export type FormType = IWMIntegrationFormData | IATIntegrationFormData
 
 interface ReusableFormProps {
 	saveDraft: (content: string) => void
 	readDraft: () => string | null
 	formList: any[]
-	preprocessFormData: (selectedIntegration: IntegrationDataType) => FormDataType
+	preprocessFormData: (selectedIntegration: IntegrationType) => FormType
 }
 
 const ReusableForm: React.FC<ReusableFormProps> = ({
@@ -37,7 +31,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 	)
 	const { setIntegrations } = useContext<IIntegrationsContext>(IntegrationsContext)
 
-	const { register, setValue, getValues, formState, trigger } = useForm<FormDataType>()
+	const { register, setValue, getValues, formState, trigger } = useForm<FormType>()
 
 	const getKeyValue =
 		<T extends object, U extends keyof T>(obj: T) =>
@@ -84,21 +78,21 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 
 	// set form data to be draft data (first time only)
 	useEffect(() => {
-		updateSelectedIntegration(preprocessFormData(selectedIntegration as IntegrationDataType))
+		updateSelectedIntegration(preprocessFormData(selectedIntegration as IntegrationType))
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	// update form fields on UI
 	useEffect(() => {
-		const integrationInfoFormData: FormDataType = preprocessFormData(
-			selectedIntegration as IntegrationDataType,
+		const integrationInfoFormData: FormType = preprocessFormData(
+			selectedIntegration as IntegrationType,
 		)
 		const keys = Object.keys(integrationInfoFormData)
 		formList.forEach((item: { formItemName: string; defaultValue: string }) => {
 			keys.forEach((key: any) => {
 				if (key === item.formItemName) {
 					const value: string = getKeyValue(integrationInfoFormData)(key)
-					const k = item.formItemName as keyof FormDataType as string
+					const k = item.formItemName as keyof FormType as string
 					setValue(k, value || item.defaultValue)
 				}
 			})
@@ -108,7 +102,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 	}, [selectedIntegration, formList])
 
 	// update selectedIntegration in context
-	const updateSelectedIntegration = (integrationFormData: FormDataType) => {
+	const updateSelectedIntegration = (integrationFormData: FormType) => {
 		if (selectedIntegration === null) return
 
 		const draft = JSON.parse(readDraft() || '{}')
@@ -124,8 +118,8 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 			...formState.dirtyFields,
 			...allDirtyFields,
 		}
-		const updatedWMIntegrationData: IntegrationDataType = {
-			...(selectedIntegration as IntegrationDataType),
+		const updatedWMIntegrationData: IntegrationType = {
+			...(selectedIntegration as IntegrationType),
 			integrationName: integrationFormData.integrationName,
 			isDirty: true,
 			hasError,
@@ -152,7 +146,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 		<form
 			onChange={() => {
 				trigger()
-				updateSelectedIntegration(getValues() as FormDataType)
+				updateSelectedIntegration(getValues() as FormType)
 			}}
 		>
 			{formList.map((formItem: any) => {

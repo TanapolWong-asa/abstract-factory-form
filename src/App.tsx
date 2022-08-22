@@ -3,6 +3,7 @@ import './App.css'
 import React, { useContext, useEffect, useState } from 'react'
 
 import { IntegrationSelector } from './components'
+import InterfaceSelector from './components/InterfaceSelector'
 import TechnologySelector from './components/TechnologySelector'
 import { EditPartner } from './pages'
 import ATFormFactory from './pages/EditPartner/FormFactory/ATFormFactory'
@@ -20,16 +21,16 @@ export enum Technology {
 
 const App = () => {
 	const [technology, setTechnology] = useState<string>('')
-	const [factory, setFactory] = useState<FormFactory>()
+	const [formFactory, setFormFactory] = useState<FormFactory>()
 	const { selectedIntegration, setSelectedIntegration } = useContext<ISelectedIntegrationContext>(
 		SelectedIntegrationContext,
 	)
 
 	useEffect(() => {
 		if (technology === Technology.WM) {
-			setFactory(new WMFormFactory())
+			setFormFactory(new WMFormFactory())
 		} else if (technology === Technology.AT) {
-			setFactory(new ATFormFactory())
+			setFormFactory(new ATFormFactory())
 		}
 		setSelectedIntegration(null)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,8 +43,9 @@ const App = () => {
 				setTechnology={setTechnology}
 			/>
 			{technology !== '' && <IntegrationSelector technology={technology} />}
-			{factory && selectedIntegration ? (
-				<EditPartner formFactory={factory} />
+			{selectedIntegration && <InterfaceSelector technology={technology} />}
+			{formFactory && selectedIntegration ? (
+				<EditPartner formFactory={formFactory} />
 			) : (
 				<div>Select your integration from dropdown</div>
 			)}

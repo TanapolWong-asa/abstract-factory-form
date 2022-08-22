@@ -3,26 +3,29 @@ import React from 'react'
 
 import { ISelectedIntegrationContext } from '../../../../stores/selectedIntegration'
 import { FormItem } from '../../Form/interfaces'
-import ReusableForm, { IntegrationDataType } from '../../Form/reusableForm'
-import { IATIntegrationFormData } from '../../interfaces'
+import ReusableForm from '../../Form/reusableForm'
+import { IATIntegrationData, IATIntegrationFormData, IntegrationType } from '../../interfaces'
 import IntegrationForm from './IntegrationForm'
 
 class ATIntegrationForm extends IntegrationForm {
 	protected preprocessIntegrationInfoFormData(
-		selectedIntegration: IntegrationDataType,
+		selectedIntegration: IntegrationType,
 	): IATIntegrationFormData {
+		const selectedATIntegration = selectedIntegration as IATIntegrationData
 		const draft = JSON.parse(this.readDraft() || '{}')
 		const allDirtyFields = {
-			...selectedIntegration.dirtyFields,
+			...selectedATIntegration.dirtyFields,
 			...(draft as any)['dirtyFields'],
 		}
 
 		const processedFormData: IATIntegrationFormData = {
-			technology: selectedIntegration.technology,
+			technology: selectedATIntegration.technology,
 			integrationName:
-				(draft as any)['integrationName'] || selectedIntegration.integrationName,
-			isDirty: selectedIntegration.isDirty || false,
-			hasError: selectedIntegration.hasError || false,
+				(draft as any)['integrationName'] || selectedATIntegration.integrationName,
+			businessLine: (draft as any)['businessLine'] || selectedATIntegration.businessLine,
+
+			isDirty: selectedATIntegration.isDirty || false,
+			hasError: selectedATIntegration.hasError || false,
 			dirtyFields: allDirtyFields,
 		}
 		this.saveDraft(JSON.stringify(processedFormData))
@@ -48,6 +51,17 @@ class ATIntegrationForm extends IntegrationForm {
 				inputType: 'text',
 				label: 'Integration Name',
 				formItemName: 'integrationName',
+				defaultValue: '',
+				required: true,
+				disabled: false,
+				regex: /./i,
+				errorMessage: 'This is a required Field.',
+			},
+			{
+				id: 3,
+				inputType: 'text',
+				label: 'Business Line',
+				formItemName: 'businessLine',
 				defaultValue: '',
 				required: true,
 				disabled: false,

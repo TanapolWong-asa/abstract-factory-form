@@ -3,8 +3,7 @@ import React from 'react'
 
 import { SelectedIntegrationContext } from '../../../../stores/selectedIntegration'
 import { FormItem } from '../../Form/interfaces'
-import { IntegrationDataType } from '../../Form/reusableForm'
-import { IIntegrationFormData } from '../../interfaces'
+import { IIntegrationFormData, IntegrationType } from '../../interfaces'
 import DraftableForm from '../DraftableForm'
 
 abstract class IntegrationForm extends DraftableForm {
@@ -17,7 +16,7 @@ abstract class IntegrationForm extends DraftableForm {
 	}
 
 	protected abstract preprocessIntegrationInfoFormData(
-		selectedIntegration: IntegrationDataType,
+		selectedIntegration: IntegrationType,
 	): IIntegrationFormData
 
 	protected abstract generateFormList(): FormItem[]
