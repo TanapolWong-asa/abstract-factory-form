@@ -2,13 +2,9 @@ import './App.css'
 
 import React, { useContext, useEffect, useState } from 'react'
 
-import { IntegrationSelector } from './components'
-import InterfaceSelector from './components/InterfaceSelector'
-import TechnologySelector from './components/TechnologySelector'
+import { IntegrationSelector, InterfaceSelector, TechnologySelector } from './components'
 import { EditPartner } from './pages'
-import ATFormFactory from './pages/EditPartner/FormFactory/ATFormFactory'
-import { FormFactory } from './pages/EditPartner/FormFactory/FormFactory'
-import WMFormFactory from './pages/EditPartner/FormFactory/WMFormFactory'
+import { ATFormFactory, FormFactory, WMFormFactory } from './pages/EditPartner/FormFactory'
 import {
 	ISelectedIntegrationContext,
 	SelectedIntegrationContext,
