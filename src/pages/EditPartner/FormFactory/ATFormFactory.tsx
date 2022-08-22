@@ -3,7 +3,7 @@ import React from 'react'
 
 import ATConnectionForm from './ConnectionForm/ATConnectionForm'
 import ConnectionForm from './ConnectionForm/ConnectionForm'
-import { FormFactory } from './FormFactory'
+import FormFactory from './FormFactory'
 import ATIntegrationForm from './IntegrationForm/ATIntegrationForm'
 import IntegrationForm from './IntegrationForm/IntegrationForm'
 import ATInterfaceForm from './InterfaceForm/ATInterfaceForm'

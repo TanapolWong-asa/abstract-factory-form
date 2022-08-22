@@ -5,7 +5,7 @@ import {
 	SelectedIntegrationContext,
 } from '../../stores/selectedIntegration'
 import ConnectionForm from './FormFactory/ConnectionForm/ConnectionForm'
-import { FormFactory } from './FormFactory/FormFactory'
+import FormFactory from './FormFactory/FormFactory'
 import IntegrationForm from './FormFactory/IntegrationForm/IntegrationForm'
 import InterfaceForm from './FormFactory/InterfaceForm/InterfaceForm'
 

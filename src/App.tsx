@@ -4,7 +4,9 @@ import React, { useContext, useEffect, useState } from 'react'
 
 import { IntegrationSelector, InterfaceSelector, TechnologySelector } from './components'
 import { EditPartner } from './pages'
-import { ATFormFactory, FormFactory, WMFormFactory } from './pages/EditPartner/FormFactory'
+import ATFormFactory from './pages/EditPartner/FormFactory/ATFormFactory'
+import FormFactory from './pages/EditPartner/FormFactory/FormFactory'
+import WMFormFactory from './pages/EditPartner/FormFactory/WMFormFactory'
 import {
 	ISelectedIntegrationContext,
 	SelectedIntegrationContext,
