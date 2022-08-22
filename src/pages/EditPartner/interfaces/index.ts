@@ -18,24 +18,21 @@ export interface IIntegrationData {
 }
 
 export interface IIntegrationFormData {
+	technology: string
+	integrationName: string
 	isDirty: boolean
 	hasError: boolean
 	dirtyFields: any
 }
 
 export interface IWMIntegrationData extends IIntegrationData {}
-export interface IWMIntegrationFormData extends IIntegrationFormData {
-	technology: string
-	integrationName: string
-}
+export interface IWMIntegrationFormData extends IIntegrationFormData {}
 
 export interface IATIntegrationData extends IIntegrationData {
 	businessLine: string
 	ATRef?: any
 }
 export interface IATIntegrationFormData extends IIntegrationFormData {
-	technology: string
-	integrationName: string
 	businessLine: string
 }
 
@@ -43,10 +40,11 @@ export interface IATIntegrationFormData extends IIntegrationFormData {
 
 export type IntegrationType = IWMIntegrationData | IATIntegrationData
 
-// TODO: Change this
 export interface IInterfaceData {
 	interfaceId: string
 	interfaceName: string
+	connections: any[] // TODO: change to IWMConnectionData |IATConnectionData=
+
 	lastModifiedDate?: string
 	lastModifiedBy?: string
 	createdDate?: string
@@ -58,16 +56,29 @@ export interface IInterfaceData {
 	errorFields?: any
 }
 
-// TODO: Change this
-
 export interface IInterfaceFormData {
 	isDirty: boolean
 	hasError: boolean
 	dirtyFields: any
 }
 
-export interface IWMInterfaceData extends IInterfaceData {}
-export interface IATInterfaceData extends IInterfaceData {}
+export interface IWMInterfaceData extends IInterfaceData {
+	direction: string
+	businessTransactionType: string
+}
+
+export interface IWMInterfaceFormData extends IInterfaceFormData {
+	direction: string
+	businessTransactionType: string
+}
+export interface IATInterfaceData extends IInterfaceData {
+	jobType: string
+	notes: string
+}
+export interface IATInterfaceFormData extends IInterfaceFormData {
+	jobType: string
+	notes: string
+}
 
 // XXX: Add other tech interface here
 export type InterfaceType = IWMInterfaceData | IATInterfaceData
