@@ -3,20 +3,20 @@ import React, { createContext, FunctionComponent } from 'react'
 import { ISelectedIntegrationContext, SelectedIntegrationContext } from '../selectedIntegration'
 import { ISelectedInterfaceContext, SelectedInterfaceContext } from '../selectedInterface'
 
-// CONTINUE: Combine this
-export interface IIntegrationsAndInterfacesContext {
+export interface ISelectedIntegrationAndSelectedInterfaceContext {
 	selectedIntegrationContext: ISelectedIntegrationContext | null
 	selectedInterfaceContext: ISelectedInterfaceContext | null
 }
-export const IntegrationsAndInterfacesContext = createContext<IIntegrationsAndInterfacesContext>({
-	selectedIntegrationContext: null,
-	selectedInterfaceContext: null,
-})
+export const IntegrationsAndInterfacesContext =
+	createContext<ISelectedIntegrationAndSelectedInterfaceContext>({
+		selectedIntegrationContext: null,
+		selectedInterfaceContext: null,
+	})
 
-interface IntegrationsAndInterfacesProviderProps {}
+interface SelectedIntegrationAndSelectedInterfaceProviderProps {}
 
-export const IntegrationsAndInterfacesProvider: FunctionComponent<
-	IntegrationsAndInterfacesProviderProps
+export const SelectedIntegrationAndSelectedInterfaceProvider: FunctionComponent<
+	SelectedIntegrationAndSelectedInterfaceProviderProps
 > = (props: any) => (
 	<SelectedIntegrationContext.Consumer>
 		{(selectedIntegrationContext) => (

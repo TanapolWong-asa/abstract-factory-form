@@ -2,19 +2,19 @@
 import React from 'react'
 
 import {
-	IIntegrationsAndInterfacesContext,
+	ISelectedIntegrationAndSelectedInterfaceContext,
 	IntegrationsAndInterfacesContext,
-	IntegrationsAndInterfacesProvider,
-} from '../../../../stores/combinedContext/integrationAndInterface'
+	SelectedIntegrationAndSelectedInterfaceProvider,
+} from '../../../../stores/combinedStore/integrationAndInterface'
 import { FormItem } from '../../Form/interfaces'
 import { InterfaceFormType, ReusableInterfaceForm } from '../../Form/reusableForm'
 import { InterfaceType, IWMInterfaceData, IWMInterfaceFormData } from '../../interfaces'
 import InterfaceForm from './InterfaceForm'
 
 const WMInterfaceForm = () => (
-	<IntegrationsAndInterfacesProvider>
+	<SelectedIntegrationAndSelectedInterfaceProvider>
 		<WMInterfaceFormInner />
-	</IntegrationsAndInterfacesProvider>
+	</SelectedIntegrationAndSelectedInterfaceProvider>
 )
 
 export default WMInterfaceForm
@@ -29,11 +29,12 @@ class WMInterfaceFormInner extends InterfaceForm {
 		// The context will only be null just when createContext is called, later it will always selectedIntegration and selectedInterface context
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const { partnerId, selectedIntegration } = (
-			this.context as IIntegrationsAndInterfacesContext
+			this.context as ISelectedIntegrationAndSelectedInterfaceContext
 		).selectedIntegrationContext!
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		const { selectedInterface } = (this.context as IIntegrationsAndInterfacesContext)
-			.selectedInterfaceContext!
+		const { selectedInterface } = (
+			this.context as ISelectedIntegrationAndSelectedInterfaceContext
+		).selectedInterfaceContext!
 		return `${partnerId}-${selectedIntegration?.integrationId}-${selectedInterface?.interfaceId}-WMInterfaceDraft` // Recommended draft key pattern
 	}
 
