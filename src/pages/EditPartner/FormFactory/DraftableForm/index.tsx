@@ -1,14 +1,8 @@
 import React from 'react'
 
-// HACK: This is messy as hell, refactor this later => https://stackoverflow.com/a/39124219
-export interface DraftableFormProps {
-	// eslint-disable-next-line react/no-unused-prop-types
-	otherProps?: Record<string, unknown> // If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.
-}
+export interface DraftableFormProps {}
 
-export interface DraftableFormStates {
-	otherStates?: Record<string, unknown>
-}
+export interface DraftableFormStates {}
 
 abstract class DraftableForm<
 	P extends DraftableFormProps,

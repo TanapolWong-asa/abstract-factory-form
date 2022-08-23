@@ -42,10 +42,10 @@ class WMInterfaceFormInner extends InterfaceForm {
 	}
 
 	public generateDraftKey(): string {
-		const { partnerId, selectedIntegration } = this.state.otherStates
-			?.selectedIntegrationContext as ISelectedIntegrationContext
-		const { selectedInterface } = this.state.otherStates
-			?.selectedInterfaceContext as ISelectedInterfaceContext
+		const { partnerId, selectedIntegration } = this.state
+			.selectedIntegrationContext as ISelectedIntegrationContext
+		const { selectedInterface } = this.state
+			.selectedInterfaceContext as ISelectedInterfaceContext
 		return `${partnerId}-${selectedIntegration?.integrationId}-${selectedInterface?.interfaceId}-WMInterfaceDraft` // Recommended draft key pattern
 	}
 
