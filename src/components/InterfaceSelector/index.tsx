@@ -24,12 +24,6 @@ const InterfaceSelector: FunctionComponent<InterfaceSelectorProps> = ({
 		setFilteredInterfaces(selectedIntegration?.interfaces.interfaceList || [])
 	}, [technology, selectedIntegration])
 
-	// FIXME Warning: Encountered two children with the same key, `integration6`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
-	// at select
-	// at IntegrationSelector
-	// at div
-	// at App
-	// Noted that the key is different from time to time (not only for id=6)
 	return (
 		<select
 			onChange={(e) => {

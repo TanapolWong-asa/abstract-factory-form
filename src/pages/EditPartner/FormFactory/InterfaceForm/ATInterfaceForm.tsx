@@ -1,32 +1,21 @@
 /* eslint-disable class-methods-use-this */
-import React, { useContext } from 'react'
+import React from 'react'
 
 import {
-	ISelectedIntegrationContext,
-	SelectedIntegrationContext,
-} from '../../../../stores/selectedIntegration'
-import {
-	ISelectedInterfaceContext,
-	SelectedInterfaceContext,
-} from '../../../../stores/selectedInterface'
+	IIntegrationsAndInterfacesContext,
+	IntegrationsAndInterfacesContext,
+	IntegrationsAndInterfacesProvider,
+} from '../../../../stores/combinedContext/integrationAndInterface'
 import { FormItem } from '../../Form/interfaces'
 import { InterfaceFormType, ReusableInterfaceForm } from '../../Form/reusableForm'
 import { IATInterfaceData, IATInterfaceFormData, InterfaceType } from '../../interfaces'
 import InterfaceForm from './InterfaceForm'
 
-const ATInterfaceForm = () => {
-	const selectedIntegrationContext = useContext<ISelectedIntegrationContext>(
-		SelectedIntegrationContext,
-	)
-	const selectedInterfaceContext = useContext<ISelectedInterfaceContext>(SelectedInterfaceContext)
-
-	return (
-		<ATInterfaceFormInner
-			selectedIntegrationContext={selectedIntegrationContext}
-			selectedInterfaceContext={selectedInterfaceContext}
-		/>
-	)
-}
+const ATInterfaceForm = () => (
+	<IntegrationsAndInterfacesProvider>
+		<ATInterfaceFormInner />
+	</IntegrationsAndInterfacesProvider>
+)
 class ATInterfaceFormInner extends InterfaceForm {
 	constructor(props: any) {
 		super(props)
@@ -66,7 +55,7 @@ class ATInterfaceFormInner extends InterfaceForm {
 				formItemName: 'interfaceName',
 				defaultValue: '',
 				required: true,
-				disabled: true,
+				disabled: false,
 				regex: /./i,
 				errorMessage: 'This is a required Field.',
 			},
@@ -96,10 +85,13 @@ class ATInterfaceFormInner extends InterfaceForm {
 	}
 
 	public generateDraftKey(): string {
-		const { partnerId, selectedIntegration } = this.state
-			.selectedIntegrationContext as ISelectedIntegrationContext
-		const { selectedInterface } = this.state
-			.selectedInterfaceContext as ISelectedInterfaceContext
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const { partnerId, selectedIntegration } = (
+			this.context as IIntegrationsAndInterfacesContext
+		).selectedIntegrationContext!
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const { selectedInterface } = (this.context as IIntegrationsAndInterfacesContext)
+			.selectedInterfaceContext!
 		return `${partnerId}-${selectedIntegration?.integrationId}-${selectedInterface?.interfaceId}-ATInterfaceDraft` // Recommended draft key pattern
 	}
 
@@ -114,5 +106,6 @@ class ATInterfaceFormInner extends InterfaceForm {
 		)
 	}
 }
+ATInterfaceFormInner.contextType = IntegrationsAndInterfacesContext
 
 export default ATInterfaceForm

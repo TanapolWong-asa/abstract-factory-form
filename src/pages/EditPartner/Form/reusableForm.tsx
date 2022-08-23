@@ -279,7 +279,7 @@ export const ReusableInterfaceForm: React.FunctionComponent<ReusableInterfaceFor
 		// save new data to integration list (for dropdown selector UI)
 		setIntegrations((integrations) =>
 			integrations.map((integration) => {
-				if (integration.integrationId === selectedInterface.interfaceId) {
+				if (integration.integrationId === selectedIntegration?.integrationId) {
 					return updatedIntegrationData
 				}
 				return integration

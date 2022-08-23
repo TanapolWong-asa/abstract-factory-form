@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useContext, useEffect, useState } from 'react'
+import React, { ReactNode, useContext, useEffect, useState } from 'react'
 
 import {
 	ISelectedIntegrationContext,
@@ -24,8 +24,8 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 	)
 	const { selectedInterface } = useContext<ISelectedInterfaceContext>(SelectedInterfaceContext)
 
-	// FIXME: Sometimes form is not render although selectedIntegration/selectedInterface is no longer null
-	const setFormByStage = useCallback(() => {
+	// FIXME: Cause error when render some form when data is null (to reproduce: select tech -> select int -> select inf -> select tech)
+	useEffect(() => {
 		switch (stage) {
 			case 1:
 				if (!selectedIntegration) setForm(<div>Select an integration</div>)
@@ -40,20 +40,16 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 				break
 			default:
 				setForm(<div>NOT VALID STAGE</div>)
-				break
 		}
-	}, [stage, formFactory, selectedIntegration, selectedInterface])
-
-	useEffect(() => {
-		setFormByStage()
-	}, [stage, formFactory, setFormByStage])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [stage, formFactory, selectedIntegration?.integrationId, selectedInterface?.interfaceId])
 
 	useEffect(() => {
 		setStage(1)
-	}, [selectedIntegration?.integrationId])
+	}, [selectedIntegration])
 	useEffect(() => {
-		setStage(2)
-	}, [selectedInterface?.interfaceId])
+		if (selectedInterface) setStage(2)
+	}, [selectedInterface])
 
 	const NextButton = () => (
 		<button

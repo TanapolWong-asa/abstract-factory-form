@@ -11,7 +11,7 @@ const TechnologySelector: React.FunctionComponent<TechnologySelectorProps> = ({
 }: TechnologySelectorProps) => (
 	<select onChange={(e) => setTechnology(e.target.value)} defaultValue="default">
 		{technologies.map((technology) => (
-			<option key={`integration${technology}`} value={technology}>
+			<option key={`technology${technology}`} value={technology}>
 				{technology}
 			</option>
 		))}

@@ -1,51 +1,39 @@
 /* eslint-disable class-methods-use-this */
-import React, { useContext } from 'react'
+import React from 'react'
 
 import {
-	ISelectedIntegrationContext,
-	SelectedIntegrationContext,
-} from '../../../../stores/selectedIntegration'
-import {
-	ISelectedInterfaceContext,
-	SelectedInterfaceContext,
-} from '../../../../stores/selectedInterface'
+	IIntegrationsAndInterfacesContext,
+	IntegrationsAndInterfacesContext,
+	IntegrationsAndInterfacesProvider,
+} from '../../../../stores/combinedContext/integrationAndInterface'
 import { FormItem } from '../../Form/interfaces'
 import { InterfaceFormType, ReusableInterfaceForm } from '../../Form/reusableForm'
 import { InterfaceType, IWMInterfaceData, IWMInterfaceFormData } from '../../interfaces'
 import InterfaceForm from './InterfaceForm'
 
-const WMInterfaceForm = () => {
-	const selectedIntegrationContext = useContext<ISelectedIntegrationContext>(
-		SelectedIntegrationContext,
-	)
-	const selectedInterfaceContext = useContext<ISelectedInterfaceContext>(SelectedInterfaceContext)
-
-	// FIXME: Form not change according to selectedInterface (only change once)
-	return (
-		<WMInterfaceFormInner
-			selectedIntegrationContext={selectedIntegrationContext}
-			selectedInterfaceContext={selectedInterfaceContext}
-		/>
-	)
-}
+const WMInterfaceForm = () => (
+	<IntegrationsAndInterfacesProvider>
+		<WMInterfaceFormInner />
+	</IntegrationsAndInterfacesProvider>
+)
 
 export default WMInterfaceForm
-
-// on adding more props: https://stackoverflow.com/questions/36750387/react-adding-props-to-an-existing-component
+// Since the class needed 2 context to function, we'll pass it from wrapper instead
 class WMInterfaceFormInner extends InterfaceForm {
 	constructor(props: any) {
 		super(props)
-		this.state = {
-			selectedIntegrationContext: props.selectedIntegrationContext,
-			selectedInterfaceContext: props.selectedInterfaceContext,
-		}
+		this.state = { ...props }
 	}
 
 	public generateDraftKey(): string {
-		const { partnerId, selectedIntegration } = this.state
-			.selectedIntegrationContext as ISelectedIntegrationContext
-		const { selectedInterface } = this.state
-			.selectedInterfaceContext as ISelectedInterfaceContext
+		// The context will only be null just when createContext is called, later it will always selectedIntegration and selectedInterface context
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const { partnerId, selectedIntegration } = (
+			this.context as IIntegrationsAndInterfacesContext
+		).selectedIntegrationContext!
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const { selectedInterface } = (this.context as IIntegrationsAndInterfacesContext)
+			.selectedInterfaceContext!
 		return `${partnerId}-${selectedIntegration?.integrationId}-${selectedInterface?.interfaceId}-WMInterfaceDraft` // Recommended draft key pattern
 	}
 
@@ -81,7 +69,7 @@ class WMInterfaceFormInner extends InterfaceForm {
 				formItemName: 'interfaceName',
 				defaultValue: '',
 				required: true,
-				disabled: true,
+				disabled: false,
 				regex: /./i,
 				errorMessage: 'This is a required Field.',
 			},
@@ -121,3 +109,4 @@ class WMInterfaceFormInner extends InterfaceForm {
 		)
 	}
 }
+WMInterfaceFormInner.contextType = IntegrationsAndInterfacesContext

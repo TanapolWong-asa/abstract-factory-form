@@ -7,7 +7,7 @@ import FormFactory from './FormFactory'
 import IntegrationForm from './IntegrationForm/IntegrationForm'
 import WMIntegrationForm from './IntegrationForm/WMIntegrationForm'
 import InterfaceForm from './InterfaceForm/InterfaceForm'
-import WMInterfaceFormInner from './InterfaceForm/WMInterfaceForm'
+import WMInterfaceForm from './InterfaceForm/WMInterfaceForm'
 
 class WMFormFactory implements FormFactory {
 	// must be render this way to trigger react's lifecycle method
@@ -16,7 +16,7 @@ class WMFormFactory implements FormFactory {
 	}
 
 	createInterfaceForm(): InterfaceForm {
-		return (<WMInterfaceFormInner />) as unknown as InterfaceForm
+		return (<WMInterfaceForm />) as unknown as InterfaceForm
 	}
 
 	createConnectionForm(): ConnectionForm {
