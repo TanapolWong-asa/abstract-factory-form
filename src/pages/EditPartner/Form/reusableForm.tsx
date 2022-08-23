@@ -28,7 +28,9 @@ interface ReusableIntegrationFormProps {
 	saveDraft: (content: string) => void
 	readDraft: () => string | null
 	formList: any[]
-	preprocessIntegrationInfoFormData: (selectedIntegration: IntegrationType) => IntegrationFormType
+	preprocessIntegrationInfoFormData: (
+		selectedIntegration: IntegrationType | null,
+	) => IntegrationFormType
 }
 
 export const ReusableIntegrationForm: React.FC<ReusableIntegrationFormProps> = ({
@@ -66,17 +68,14 @@ export const ReusableIntegrationForm: React.FC<ReusableIntegrationFormProps> = (
 
 	// set form data to be draft data (first time only)
 	useEffect(() => {
-		updateSelectedIntegration(
-			preprocessIntegrationInfoFormData(selectedIntegration as IntegrationType),
-		)
+		updateSelectedIntegration(preprocessIntegrationInfoFormData(selectedIntegration))
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	// update form fields on UI
 	useEffect(() => {
-		const integrationInfoFormData: IntegrationFormType = preprocessIntegrationInfoFormData(
-			selectedIntegration as IntegrationType,
-		)
+		const integrationInfoFormData: IntegrationFormType =
+			preprocessIntegrationInfoFormData(selectedIntegration)
 		const keys = Object.keys(integrationInfoFormData)
 		formList.forEach((item: { formItemName: string; defaultValue: string }) => {
 			keys.forEach((key: any) => {
@@ -136,7 +135,7 @@ export const ReusableIntegrationForm: React.FC<ReusableIntegrationFormProps> = (
 		<form
 			onChange={() => {
 				trigger()
-				updateSelectedIntegration(getValues() as IntegrationFormType)
+				updateSelectedIntegration(getValues())
 			}}
 		>
 			{formList.map((formItem: any) => {
@@ -167,7 +166,7 @@ interface ReusableInterfaceFormProps {
 	saveDraft: (content: string) => void
 	readDraft: () => string | null
 	formList: any[]
-	preprocessInterfaceInfoFormData: (selectedInterface: InterfaceType) => InterfaceFormType
+	preprocessInterfaceInfoFormData: (selectedInterface: InterfaceType | null) => InterfaceFormType
 }
 
 export const ReusableInterfaceForm: React.FunctionComponent<ReusableInterfaceFormProps> = ({
@@ -206,15 +205,13 @@ export const ReusableInterfaceForm: React.FunctionComponent<ReusableInterfaceFor
 
 	// set form data to be draft data (first time only)
 	useEffect(() => {
-		updateSelectedInterface(preprocessInterfaceInfoFormData(selectedInterface as InterfaceType))
+		updateSelectedInterface(preprocessInterfaceInfoFormData(selectedInterface))
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	// update form fields on UI
 	useEffect(() => {
-		const interfaceInfoFormData = preprocessInterfaceInfoFormData(
-			selectedInterface as InterfaceType,
-		)
+		const interfaceInfoFormData = preprocessInterfaceInfoFormData(selectedInterface)
 		const keys = Object.keys(interfaceInfoFormData)
 		formList.forEach((item: { formItemName: string; defaultValue: string }) => {
 			keys.forEach((key: any) => {
@@ -230,7 +227,7 @@ export const ReusableInterfaceForm: React.FunctionComponent<ReusableInterfaceFor
 	}, [selectedIntegration, selectedInterface, formList])
 
 	const updateSelectedInterface = (interfaceFormData: InterfaceFormType) => {
-		if (selectedInterface === null) return
+		if (selectedInterface === null || selectedIntegration === null) return
 
 		const draft = JSON.parse(readDraft() || '{}')
 		const allDirtyFields = {
@@ -255,10 +252,9 @@ export const ReusableInterfaceForm: React.FunctionComponent<ReusableInterfaceFor
 		}
 		saveDraft(JSON.stringify(interfaceFormData))
 
-		// TODO: Fix null assertion
 		const updatedIntegrationData: IntegrationType = {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			...selectedIntegration!,
+			...selectedIntegration,
 			interfaces: {
 				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				interfaceList: selectedIntegration!.interfaces.interfaceList.map(

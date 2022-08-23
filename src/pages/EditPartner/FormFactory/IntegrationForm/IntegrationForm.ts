@@ -18,7 +18,7 @@ abstract class IntegrationForm extends DraftableForm<IntegrationFormProps, Integ
 	}
 
 	protected abstract preprocessIntegrationInfoFormData(
-		selectedIntegration: IntegrationType,
+		selectedIntegration: IntegrationType | null,
 	): IIntegrationFormData
 
 	protected abstract generateFormList(): FormItem[]

@@ -2,8 +2,8 @@
 import React from 'react'
 
 import {
-	ISelectedIntegrationAndSelectedInterfaceContext,
 	IntegrationsAndInterfacesContext,
+	ISelectedIntegrationAndSelectedInterfaceContext,
 	SelectedIntegrationAndSelectedInterfaceProvider,
 } from '../../../../stores/combinedStore/integrationAndInterface'
 import { FormItem } from '../../Form/interfaces'
@@ -20,11 +20,6 @@ const WMInterfaceForm = () => (
 export default WMInterfaceForm
 // Since the class needed 2 context to function, we'll pass it from wrapper instead
 class WMInterfaceFormInner extends InterfaceForm {
-	constructor(props: any) {
-		super(props)
-		this.state = { ...props }
-	}
-
 	public generateDraftKey(): string {
 		// The context will only be null just when createContext is called, later it will always selectedIntegration and selectedInterface context
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -38,7 +33,20 @@ class WMInterfaceFormInner extends InterfaceForm {
 		return `${partnerId}-${selectedIntegration?.integrationId}-${selectedInterface?.interfaceId}-WMInterfaceDraft` // Recommended draft key pattern
 	}
 
-	protected preprocessInterfaceInfoFormData(selectedInterface: InterfaceType): InterfaceFormType {
+	protected preprocessInterfaceInfoFormData(
+		selectedInterface: InterfaceType | null,
+	): InterfaceFormType {
+		if (selectedInterface === null) {
+			return {
+				businessTransactionType: '',
+				direction: '',
+				interfaceName: '',
+				isDirty: false,
+				hasError: true,
+				dirtyFields: {},
+			}
+		}
+
 		const selectedWMInterface = selectedInterface as IWMInterfaceData
 		const draft = JSON.parse(this.readDraft() || '{}')
 		const allDirtyFields = {

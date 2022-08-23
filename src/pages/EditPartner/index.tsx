@@ -24,7 +24,6 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 	)
 	const { selectedInterface } = useContext<ISelectedInterfaceContext>(SelectedInterfaceContext)
 
-	// FIXME: Cause error when render some form when data is null (to reproduce: select tech -> select int -> select inf -> select tech)
 	useEffect(() => {
 		switch (stage) {
 			case 1:
@@ -46,7 +45,7 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 
 	useEffect(() => {
 		setStage(1)
-	}, [selectedIntegration])
+	}, [selectedIntegration, formFactory])
 	useEffect(() => {
 		if (selectedInterface) setStage(2)
 	}, [selectedInterface])

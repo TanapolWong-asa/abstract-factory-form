@@ -53,8 +53,17 @@ class WMIntegrationForm extends IntegrationForm {
 
 	// This function will merge draft with fetched data (draft data get higher priority)
 	protected preprocessIntegrationInfoFormData(
-		selectedIntegration: IntegrationType,
+		selectedIntegration: IntegrationType | null,
 	): IWMIntegrationFormData {
+		if (selectedIntegration === null) {
+			return {
+				technology: '',
+				integrationName: '',
+				isDirty: false,
+				hasError: true,
+				dirtyFields: {},
+			}
+		}
 		const selectedWMIntegration = selectedIntegration as IWMIntegrationData
 		const draft = JSON.parse(this.readDraft() || '{}')
 		const allDirtyFields = {

@@ -2,8 +2,8 @@
 import React from 'react'
 
 import {
-	ISelectedIntegrationAndSelectedInterfaceContext,
 	IntegrationsAndInterfacesContext,
+	ISelectedIntegrationAndSelectedInterfaceContext,
 	SelectedIntegrationAndSelectedInterfaceProvider,
 } from '../../../../stores/combinedStore/integrationAndInterface'
 import { FormItem } from '../../Form/interfaces'
@@ -17,15 +17,19 @@ const ATInterfaceForm = () => (
 	</SelectedIntegrationAndSelectedInterfaceProvider>
 )
 class ATInterfaceFormInner extends InterfaceForm {
-	constructor(props: any) {
-		super(props)
-		this.state = {
-			selectedIntegrationContext: props.selectedIntegrationContext,
-			selectedInterfaceContext: props.selectedInterfaceContext,
+	protected preprocessInterfaceInfoFormData(
+		selectedInterface: InterfaceType | null,
+	): InterfaceFormType {
+		if (selectedInterface === null) {
+			return {
+				jobType: '',
+				notes: '',
+				interfaceName: '',
+				isDirty: false,
+				hasError: true,
+				dirtyFields: {},
+			}
 		}
-	}
-
-	protected preprocessInterfaceInfoFormData(selectedInterface: InterfaceType): InterfaceFormType {
 		const selectedATInterface = selectedInterface as IATInterfaceData
 		const draft = JSON.parse(this.readDraft() || '{}')
 		const allDirtyFields = {

@@ -9,8 +9,18 @@ import IntegrationForm from './IntegrationForm'
 
 class ATIntegrationForm extends IntegrationForm {
 	protected preprocessIntegrationInfoFormData(
-		selectedIntegration: IntegrationType,
+		selectedIntegration: IntegrationType | null,
 	): IATIntegrationFormData {
+		if (selectedIntegration === null) {
+			return {
+				technology: '',
+				integrationName: '',
+				businessLine: '',
+				isDirty: false,
+				hasError: true,
+				dirtyFields: {},
+			}
+		}
 		const selectedATIntegration = selectedIntegration as IATIntegrationData
 		const draft = JSON.parse(this.readDraft() || '{}')
 		const allDirtyFields = {

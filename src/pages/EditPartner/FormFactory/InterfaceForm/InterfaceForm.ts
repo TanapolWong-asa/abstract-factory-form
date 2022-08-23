@@ -18,7 +18,7 @@ abstract class InterfaceForm extends DraftableForm<InterfaceFormProps, Interface
 	}
 
 	protected abstract preprocessInterfaceInfoFormData(
-		selectedInterface: InterfaceType,
+		selectedInterface: InterfaceType | null,
 	): InterfaceFormType
 
 	protected abstract generateFormList(): FormItem[]
