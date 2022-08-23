@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 
 import {
 	ISelectedIntegrationContext,
@@ -23,10 +23,8 @@ const WMInterfaceForm = () => {
 	// FIXME: Form not change according to selectedInterface (only change once)
 	return (
 		<WMInterfaceFormInner
-			otherProps={{
-				selectedIntegrationContext,
-				selectedInterfaceContext,
-			}}
+			selectedIntegrationContext={selectedIntegrationContext}
+			selectedInterfaceContext={selectedInterfaceContext}
 		/>
 	)
 }
@@ -38,10 +36,8 @@ class WMInterfaceFormInner extends InterfaceForm {
 	constructor(props: any) {
 		super(props)
 		this.state = {
-			otherStates: {
-				selectedIntegrationContext: props.otherProps.selectedIntegrationContext,
-				selectedInterfaceContext: props.otherProps.selectedInterfaceContext,
-			},
+			selectedIntegrationContext: props.selectedIntegrationContext,
+			selectedInterfaceContext: props.selectedInterfaceContext,
 		}
 	}
 

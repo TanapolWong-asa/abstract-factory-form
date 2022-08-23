@@ -6,7 +6,9 @@ import { FormItem } from '../../Form/interfaces'
 import { IIntegrationFormData, IntegrationType } from '../../interfaces'
 import DraftableForm from '../DraftableForm'
 
-abstract class IntegrationForm extends DraftableForm {
+interface IntegrationFormProps {}
+interface IntegrationFormStates {}
+abstract class IntegrationForm extends DraftableForm<IntegrationFormProps, IntegrationFormStates> {
 	protected currentStage = 1 // might be useless
 
 	constructor(props: any) {

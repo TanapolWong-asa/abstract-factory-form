@@ -22,10 +22,8 @@ const ATInterfaceForm = () => {
 
 	return (
 		<ATInterfaceFormInner
-			otherProps={{
-				selectedIntegrationContext,
-				selectedInterfaceContext,
-			}}
+			selectedIntegrationContext={selectedIntegrationContext}
+			selectedInterfaceContext={selectedInterfaceContext}
 		/>
 	)
 }
@@ -33,10 +31,8 @@ class ATInterfaceFormInner extends InterfaceForm {
 	constructor(props: any) {
 		super(props)
 		this.state = {
-			otherStates: {
-				selectedIntegrationContext: props.otherProps.selectedIntegrationContext,
-				selectedInterfaceContext: props.otherProps.selectedInterfaceContext,
-			},
+			selectedIntegrationContext: props.selectedIntegrationContext,
+			selectedInterfaceContext: props.selectedInterfaceContext,
 		}
 	}
 
