@@ -1,7 +1,9 @@
 import React, { FunctionComponent, ReactNode } from 'react'
 
+import { ConnectionsProvider } from './connections'
 import { InterfacesProvider } from './interfaces'
 import { IntegrationsProvider } from './intergrations'
+import { SelectedConnectionProvider } from './selectedConnection'
 import { SelectedIntegrationProvider } from './selectedIntegration'
 import { SelectedInterfaceProvider } from './selectedInterface'
 
@@ -15,7 +17,11 @@ export const StoreProvider: FunctionComponent<StoreProviderProps> = ({
 	<IntegrationsProvider>
 		<SelectedIntegrationProvider>
 			<InterfacesProvider>
-				<SelectedInterfaceProvider>{children}</SelectedInterfaceProvider>
+				<SelectedInterfaceProvider>
+					<ConnectionsProvider>
+						<SelectedConnectionProvider>{children}</SelectedConnectionProvider>
+					</ConnectionsProvider>
+				</SelectedInterfaceProvider>
 			</InterfacesProvider>
 		</SelectedIntegrationProvider>
 	</IntegrationsProvider>
