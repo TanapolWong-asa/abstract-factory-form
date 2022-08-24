@@ -85,6 +85,13 @@ export interface IATInterfaceFormData extends IInterfaceFormData {
 export type InterfaceType = IWMInterfaceData | IATInterfaceData
 
 export interface IConnectionData {
+	connectionId: string
+	connectionName: string
+	transferMode: string
+	contentType: string
+	fileName: string
+	portNumbers: string
+
 	lastModifiedDate?: string
 	lastModifiedBy?: string
 	createdDate?: string
@@ -96,14 +103,32 @@ export interface IConnectionData {
 	errorFields?: any
 }
 export interface IConnectionFormData {
+	connectionName: string
+	transferMode: string
+	contentType: string
+	fileName: string
+	portNumbers: string
+
 	isDirty: boolean
 	hasError: boolean
 	dirtyFields: any
 }
 
-export interface IWMConnectionData extends IConnectionData {}
-export interface IWMConnectionFormData extends IConnectionFormData {}
-export interface IATConnectionData extends IConnectionData {}
-export interface IATConnectionFormData extends IConnectionFormData {}
+export interface IWMConnectionData extends IConnectionData {
+	sapServer: string
+	databaseName: string
+}
+export interface IWMConnectionFormData extends IConnectionFormData {
+	sapServer: string
+	databaseName: string
+}
+export interface IATConnectionData extends IConnectionData {
+	protocol: string
+	authenticationType: string
+}
+export interface IATConnectionFormData extends IConnectionFormData {
+	protocol: string
+	authenticationType: string
+}
 
 export type ConnectionData = IWMConnectionData | IATConnectionData
