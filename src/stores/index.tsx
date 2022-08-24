@@ -3,7 +3,7 @@ import React, { FunctionComponent, ReactNode } from 'react'
 import { ConnectionsProvider } from './connections'
 import { InterfacesProvider } from './interfaces'
 import { IntegrationsProvider } from './intergrations'
-import { SelectedConnectionProvider } from './selectedConnection'
+import { SelectedConnectionProvider } from './selectedConnections'
 import { SelectedIntegrationProvider } from './selectedIntegration'
 import { SelectedInterfaceProvider } from './selectedInterface'
 

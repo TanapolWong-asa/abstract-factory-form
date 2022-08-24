@@ -131,4 +131,5 @@ export interface IATConnectionFormData extends IConnectionFormData {
 	authenticationType: string
 }
 
+// XXX: Add other tech interface here
 export type ConnectionData = IWMConnectionData | IATConnectionData
