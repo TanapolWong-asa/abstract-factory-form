@@ -3,7 +3,7 @@ import React from 'react'
 
 import { FormItem } from '../../Form/interfaces'
 import { InterfaceFormType } from '../../Form/reusableForm'
-import { InterfaceType } from '../../interfaces'
+import { InterfaceDataType } from '../../interfaces'
 import DraftableForm, { DraftableFormProps, DraftableFormStates } from '../DraftableForm'
 
 interface InterfaceFormProps extends DraftableFormProps {}
@@ -18,7 +18,7 @@ abstract class InterfaceForm extends DraftableForm<InterfaceFormProps, Interface
 	}
 
 	protected abstract preprocessInterfaceInfoFormData(
-		selectedInterface: InterfaceType | null,
+		selectedInterface: InterfaceDataType | null,
 	): InterfaceFormType
 
 	protected abstract generateFormList(): FormItem[]

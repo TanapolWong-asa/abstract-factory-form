@@ -1,7 +1,12 @@
 import React, { useCallback, useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
+import { ConnectionsContext, IConnectionsContext } from '../../../stores/connections'
 import { IIntegrationsContext, IntegrationsContext } from '../../../stores/intergrations'
+import {
+	ISelectedConnectionsContext,
+	SelectedConnectionsContext,
+} from '../../../stores/selectedConnections'
 import {
 	ISelectedIntegrationContext,
 	SelectedIntegrationContext,
@@ -11,25 +16,29 @@ import {
 	SelectedInterfaceContext,
 } from '../../../stores/selectedInterface'
 import {
+	IATConnectionFormData,
 	IATIntegrationFormData,
 	IATInterfaceFormData,
-	IntegrationType,
-	InterfaceType,
+	IntegrationDataType,
+	InterfaceDataType,
+	IWMConnectionFormData,
 	IWMIntegrationFormData,
 	IWMInterfaceFormData,
 } from '../interfaces'
 import { InputType, RenderFormItemByType } from '.'
+import { FormItem } from './interfaces'
 
 // Add more form type here
 export type IntegrationFormType = IWMIntegrationFormData | IATIntegrationFormData
 export type InterfaceFormType = IWMInterfaceFormData | IATInterfaceFormData
+export type ConnectionFormType = IWMConnectionFormData | IATConnectionFormData
 
 interface ReusableIntegrationFormProps {
 	saveDraft: (content: string) => void
 	readDraft: () => string | null
-	formList: any[]
+	formList: FormItem[]
 	preprocessIntegrationInfoFormData: (
-		selectedIntegration: IntegrationType | null,
+		selectedIntegration: IntegrationDataType | null,
 	) => IntegrationFormType
 }
 
@@ -77,7 +86,7 @@ export const ReusableIntegrationForm: React.FC<ReusableIntegrationFormProps> = (
 		const integrationInfoFormData: IntegrationFormType =
 			preprocessIntegrationInfoFormData(selectedIntegration)
 		const keys = Object.keys(integrationInfoFormData)
-		formList.forEach((item: { formItemName: string; defaultValue: string }) => {
+		formList.forEach((item: FormItem) => {
 			keys.forEach((key: any) => {
 				if (key === item.formItemName) {
 					const value: string = getKeyValue(integrationInfoFormData)(key)
@@ -107,8 +116,8 @@ export const ReusableIntegrationForm: React.FC<ReusableIntegrationFormProps> = (
 			...formState.dirtyFields,
 			...allDirtyFields,
 		}
-		const updatedIntegrationData: IntegrationType = {
-			...(selectedIntegration as IntegrationType),
+		const updatedIntegrationData: IntegrationDataType = {
+			...(selectedIntegration as IntegrationDataType),
 			integrationName: integrationFormData.integrationName,
 			isDirty: true,
 			hasError,
@@ -165,8 +174,10 @@ export const ReusableIntegrationForm: React.FC<ReusableIntegrationFormProps> = (
 interface ReusableInterfaceFormProps {
 	saveDraft: (content: string) => void
 	readDraft: () => string | null
-	formList: any[]
-	preprocessInterfaceInfoFormData: (selectedInterface: InterfaceType | null) => InterfaceFormType
+	formList: FormItem[]
+	preprocessInterfaceInfoFormData: (
+		selectedInterface: InterfaceDataType | null,
+	) => InterfaceFormType
 }
 
 export const ReusableInterfaceForm: React.FunctionComponent<ReusableInterfaceFormProps> = ({
@@ -213,7 +224,7 @@ export const ReusableInterfaceForm: React.FunctionComponent<ReusableInterfaceFor
 	useEffect(() => {
 		const interfaceInfoFormData = preprocessInterfaceInfoFormData(selectedInterface)
 		const keys = Object.keys(interfaceInfoFormData)
-		formList.forEach((item: { formItemName: string; defaultValue: string }) => {
+		formList.forEach((item: FormItem) => {
 			keys.forEach((key: any) => {
 				if (key === item.formItemName) {
 					const value: string = getKeyValue(interfaceInfoFormData)(key)
@@ -242,8 +253,8 @@ export const ReusableInterfaceForm: React.FunctionComponent<ReusableInterfaceFor
 			...formState.dirtyFields,
 			...allDirtyFields,
 		}
-		const updatedInterfaceData: InterfaceType = {
-			...(selectedInterface as InterfaceType),
+		const updatedInterfaceData: InterfaceDataType = {
+			...(selectedInterface as InterfaceDataType),
 			interfaceName: interfaceFormData.interfaceName,
 			isDirty: true,
 			hasError,
@@ -252,7 +263,7 @@ export const ReusableInterfaceForm: React.FunctionComponent<ReusableInterfaceFor
 		}
 		saveDraft(JSON.stringify(interfaceFormData))
 
-		const updatedIntegrationData: IntegrationType = {
+		const updatedIntegrationData: IntegrationDataType = {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			...selectedIntegration,
 			interfaces: {
@@ -313,3 +324,132 @@ export const ReusableInterfaceForm: React.FunctionComponent<ReusableInterfaceFor
 		</form>
 	)
 }
+
+// This form is not input-to-the-field kind of form, it's a select-multiple-item form which could be handle by using 'multipleselect'
+// XXX: Since connections will be save as a list, some of the methods will be implemented in different way
+// TODO: Re-implement this to use with list form item
+interface ReusableConnectionsFormProps {
+	saveDraft: (content: string) => void
+	readDraft: () => string | null
+	formList: FormItem[]
+}
+
+const ReusableConnectionsForm: React.FunctionComponent<ReusableConnectionsFormProps> = ({
+	saveDraft,
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	readDraft,
+	formList,
+}: ReusableConnectionsFormProps) => {
+	const { register, getValues, formState, trigger } = useForm<ConnectionFormType>()
+	const { setIntegrations } = useContext<IIntegrationsContext>(IntegrationsContext)
+	const { selectedIntegration, setSelectedIntegration } = useContext<ISelectedIntegrationContext>(
+		SelectedIntegrationContext,
+	)
+	const { selectedInterface, setSelectedInterface } =
+		useContext<ISelectedInterfaceContext>(SelectedInterfaceContext)
+	const { connections } = useContext<IConnectionsContext>(ConnectionsContext)
+	const { selectedConnections, setSelectedConnections } = useContext<ISelectedConnectionsContext>(
+		SelectedConnectionsContext,
+	)
+
+	const resetForm = useCallback(() => {
+		const isDirty: boolean =
+			selectedConnections.find((connection) => connection.isDirty || connection.hasError) !==
+				null || false
+		if (isDirty === true) {
+			trigger()
+		} else {
+			formState.errors = {}
+			formState.isDirty = false
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedConnections])
+	useEffect(() => resetForm(), [resetForm, selectedConnections, formList])
+
+	// set form data to be draft data (first time only)
+	useEffect(() => {
+		// updateSelectedConnections(preprocessConnectionsForm(selectedConnections))
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	// TODO: implement this
+	const updateSelectedConnections = (selectedConnectionsId: string[]) => {
+		if (selectedInterface === null || selectedIntegration === null) return
+
+		const updatedSelectedConnections = selectedConnectionsId.map(
+			(connectionId) =>
+				// TODO: Fix null assertion? (can it be guaranteed that selectedConnections will always be in the connections list?)
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				connections.find((connection) => connection.connectionId === connectionId)!,
+		)
+		setSelectedConnections(updatedSelectedConnections)
+		saveDraft(JSON.stringify(updatedSelectedConnections))
+
+		const updatedSelectedInterface: InterfaceDataType = {
+			...selectedInterface,
+			connections: updatedSelectedConnections,
+		}
+		setSelectedInterface(updatedSelectedInterface)
+
+		const updatedSelectedIntegration: IntegrationDataType = {
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			...selectedIntegration,
+			interfaces: {
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				interfaceList: selectedIntegration!.interfaces.interfaceList.map(
+					(techInterface) => {
+						if (techInterface.interfaceId === updatedSelectedInterface.interfaceId) {
+							return updatedSelectedInterface
+						}
+						return techInterface
+					},
+				),
+			},
+		}
+		setSelectedIntegration(updatedSelectedIntegration)
+		setIntegrations((integrations) =>
+			integrations.map((integration) => {
+				if (integration.integrationId === selectedIntegration?.integrationId) {
+					return updatedSelectedIntegration
+				}
+				return integration
+			}),
+		)
+
+		// TODO: implement updating integrations, selectedIntegrations, selectedInterfaces
+	}
+	return (
+		<form
+			onChange={() => {
+				trigger()
+				console.log(getValues())
+				updateSelectedConnections((getValues() as any)['connections'])
+			}}
+		>
+			{formList.map((formItem: any) => {
+				const inputType = formItem.inputType as InputType
+				return (
+					<RenderFormItemByType
+						register={register}
+						formItemName={formItem.formItemName}
+						key={formItem.id}
+						className="mb-2"
+						inputType={inputType}
+						options={formItem.options}
+						label={formItem.label}
+						formState={formState}
+						required={formItem.required}
+						regex={formItem.regex}
+						disabled={formItem.disabled}
+						errorMessage={formItem.errorMessage}
+						dirtyFields={
+							{} // (selectedIntegration && selectedIntegration.dirtyFields) || {}
+						}
+					/>
+				)
+			})}
+		</form>
+	)
+}
+
+export default ReusableConnectionsForm

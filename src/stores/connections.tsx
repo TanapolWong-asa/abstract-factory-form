@@ -1,8 +1,10 @@
 import React, { createContext, FunctionComponent, SetStateAction, useState } from 'react'
 
+import { ConnectionDataType } from '../pages/EditPartner/interfaces'
+
 export interface IConnectionsContext {
-	connections: ConnectionType[]
-	setConnections: React.Dispatch<SetStateAction<ConnectionType[]>>
+	connections: ConnectionDataType[]
+	setConnections: React.Dispatch<SetStateAction<ConnectionDataType[]>>
 }
 export const ConnectionsContext = createContext<IConnectionsContext>({
 	connections: [],
@@ -12,7 +14,7 @@ export const ConnectionsContext = createContext<IConnectionsContext>({
 interface ConnectionsProviderProps {}
 
 export const ConnectionsProvider: FunctionComponent<ConnectionsProviderProps> = (props: any) => {
-	const [connections, setConnections] = useState<ConnectionType[]>([])
+	const [connections, setConnections] = useState<ConnectionDataType[]>([])
 
 	const value: IConnectionsContext = {
 		connections,

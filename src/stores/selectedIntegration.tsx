@@ -1,12 +1,12 @@
 import React, { createContext, FunctionComponent, SetStateAction, useState } from 'react'
 
-import { IntegrationType } from '../pages/EditPartner/interfaces'
+import { IntegrationDataType } from '../pages/EditPartner/interfaces'
 
 export interface ISelectedIntegrationContext {
 	partnerId: string
 	setPartnerId: React.Dispatch<SetStateAction<string>>
-	selectedIntegration: IntegrationType | null
-	setSelectedIntegration: React.Dispatch<SetStateAction<IntegrationType | null>>
+	selectedIntegration: IntegrationDataType | null
+	setSelectedIntegration: React.Dispatch<SetStateAction<IntegrationDataType | null>>
 }
 export const SelectedIntegrationContext = createContext<ISelectedIntegrationContext>({
 	partnerId: '',
@@ -20,7 +20,7 @@ interface SelectedIntegrationProviderProps {}
 export const SelectedIntegrationProvider: FunctionComponent<SelectedIntegrationProviderProps> = (
 	props: any,
 ) => {
-	const [selectedIntegration, setSelectedIntegration] = useState<IntegrationType | null>(null)
+	const [selectedIntegration, setSelectedIntegration] = useState<IntegrationDataType | null>(null)
 	const [partnerId, setPartnerId] = useState<string>('')
 
 	const value: ISelectedIntegrationContext = {

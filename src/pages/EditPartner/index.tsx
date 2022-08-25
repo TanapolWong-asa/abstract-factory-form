@@ -1,6 +1,10 @@
 import React, { ReactNode, useContext, useEffect, useState } from 'react'
 
 import {
+	ISelectedConnectionsContext,
+	SelectedConnectionsContext,
+} from '../../stores/selectedConnections'
+import {
 	ISelectedIntegrationContext,
 	SelectedIntegrationContext,
 } from '../../stores/selectedIntegration'
@@ -19,10 +23,14 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 	const [form, setForm] = useState<IntegrationForm | InterfaceForm | ConnectionForm | ReactNode>(
 		null,
 	)
-	const { selectedIntegration } = useContext<ISelectedIntegrationContext>(
+	const { selectedIntegration, setSelectedIntegration } = useContext<ISelectedIntegrationContext>(
 		SelectedIntegrationContext,
 	)
-	const { selectedInterface } = useContext<ISelectedInterfaceContext>(SelectedInterfaceContext)
+	const { selectedInterface, setSelectedInterface } =
+		useContext<ISelectedInterfaceContext>(SelectedInterfaceContext)
+	const { selectedConnections, setSelectedConnections } = useContext<ISelectedConnectionsContext>(
+		SelectedConnectionsContext,
+	)
 
 	useEffect(() => {
 		switch (stage) {
@@ -45,10 +53,17 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 
 	useEffect(() => {
 		setStage(1)
-	}, [selectedIntegration, formFactory])
+		setSelectedInterface(null)
+		setSelectedConnections([])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedIntegration?.integrationId, formFactory])
 	useEffect(() => {
-		if (selectedInterface) setStage(2)
-	}, [selectedInterface])
+		if (selectedInterface) {
+			setStage(2)
+			setSelectedConnections([])
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedInterface?.interfaceId, formFactory])
 
 	const NextButton = () => (
 		<button
@@ -72,16 +87,48 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 		</button>
 	)
 
+	const SubmitButton = () => (
+		<button
+			type="button"
+			onClick={() => {
+				// eslint-disable-next-line no-alert
+				alert(JSON.stringify(selectedIntegration))
+			}}
+		>
+			Submit
+		</button>
+	)
+
 	return (
 		<div>
 			<>
 				Edit Partner
 				{form}
-				{stage > 1 ? <BackButton /> : null}
-				{stage < 3 ? <NextButton /> : null}
+				{stage > 1 && <BackButton />}
+				{stage < 3 && <NextButton />}
+				{stage === 3 && <SubmitButton />}
+				<CurrentFormData />
 			</>
 		</div>
 	)
 }
 
 export default EditPartner
+
+const CurrentFormData = () => {
+	const { selectedIntegration } = useContext<ISelectedIntegrationContext>(
+		SelectedIntegrationContext,
+	)
+	const { selectedInterface } = useContext<ISelectedInterfaceContext>(SelectedInterfaceContext)
+	const { selectedConnections } = useContext<ISelectedConnectionsContext>(
+		SelectedConnectionsContext,
+	)
+
+	return (
+		<div>
+			<p>{JSON.stringify(selectedIntegration)}</p>
+			<p>{JSON.stringify(selectedInterface)}</p>
+			<p>{JSON.stringify(selectedConnections)}</p>
+		</div>
+	)
+}

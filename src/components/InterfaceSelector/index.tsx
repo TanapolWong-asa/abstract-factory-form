@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 
-import { InterfaceType } from '../../pages/EditPartner/interfaces'
+import { InterfaceDataType } from '../../pages/EditPartner/interfaces'
 import {
 	ISelectedIntegrationContext,
 	SelectedIntegrationContext,
@@ -18,7 +18,7 @@ const InterfaceSelector: FunctionComponent<InterfaceSelectorProps> = ({
 		SelectedIntegrationContext,
 	)
 	const { setSelectedInterface } = useContext<ISelectedInterfaceContext>(SelectedInterfaceContext)
-	const [filteredInterfaces, setFilteredInterfaces] = useState<InterfaceType[]>([])
+	const [filteredInterfaces, setFilteredInterfaces] = useState<InterfaceDataType[]>([])
 
 	useEffect(() => {
 		setFilteredInterfaces(selectedIntegration?.interfaces.interfaceList || [])

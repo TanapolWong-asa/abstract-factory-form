@@ -5,7 +5,7 @@ import React from 'react'
 import { ISelectedIntegrationContext } from '../../../../stores/selectedIntegration'
 import { FormItem } from '../../Form/interfaces'
 import { ReusableIntegrationForm } from '../../Form/reusableForm'
-import { IntegrationType, IWMIntegrationData, IWMIntegrationFormData } from '../../interfaces'
+import { IntegrationDataType, IWMIntegrationData, IWMIntegrationFormData } from '../../interfaces'
 import IntegrationForm from './IntegrationForm'
 
 class WMIntegrationForm extends IntegrationForm {
@@ -53,7 +53,7 @@ class WMIntegrationForm extends IntegrationForm {
 
 	// This function will merge draft with fetched data (draft data get higher priority)
 	protected preprocessIntegrationInfoFormData(
-		selectedIntegration: IntegrationType | null,
+		selectedIntegration: IntegrationDataType | null,
 	): IWMIntegrationFormData {
 		if (selectedIntegration === null) {
 			return {

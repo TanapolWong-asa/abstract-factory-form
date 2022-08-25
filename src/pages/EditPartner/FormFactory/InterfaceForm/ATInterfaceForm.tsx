@@ -2,13 +2,13 @@
 import React from 'react'
 
 import {
-	IntegrationsAndInterfacesContext,
 	ISelectedIntegrationAndSelectedInterfaceContext,
+	SelectedIntegrationAndSelectedInterfaceContext,
 	SelectedIntegrationAndSelectedInterfaceProvider,
 } from '../../../../stores/combinedStore/integrationAndInterface'
 import { FormItem } from '../../Form/interfaces'
 import { InterfaceFormType, ReusableInterfaceForm } from '../../Form/reusableForm'
-import { IATInterfaceData, IATInterfaceFormData, InterfaceType } from '../../interfaces'
+import { IATInterfaceData, IATInterfaceFormData, InterfaceDataType } from '../../interfaces'
 import InterfaceForm from './InterfaceForm'
 
 const ATInterfaceForm = () => (
@@ -18,7 +18,7 @@ const ATInterfaceForm = () => (
 )
 class ATInterfaceFormInner extends InterfaceForm {
 	protected preprocessInterfaceInfoFormData(
-		selectedInterface: InterfaceType | null,
+		selectedInterface: InterfaceDataType | null,
 	): InterfaceFormType {
 		if (selectedInterface === null) {
 			return {
@@ -109,8 +109,9 @@ class ATInterfaceFormInner extends InterfaceForm {
 				preprocessInterfaceInfoFormData={this.preprocessInterfaceInfoFormData}
 			/>
 		)
+		// In case of real AT interface form, we'll have connection form here as well.
 	}
 }
-ATInterfaceFormInner.contextType = IntegrationsAndInterfacesContext
+ATInterfaceFormInner.contextType = SelectedIntegrationAndSelectedInterfaceContext
 
 export default ATInterfaceForm

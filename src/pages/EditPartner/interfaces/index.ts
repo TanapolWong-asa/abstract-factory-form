@@ -4,8 +4,9 @@ export interface IIntegrationData {
 	technology: string
 	// interfaces could be from either WM (businessTransactions) or AT (jobs), this will simplify the hassle of 'switch-case' in general class such as InterfaceSelector
 	interfaces: {
-		interfaceList: InterfaceType[]
+		interfaceList: InterfaceDataType[]
 	}
+
 	lastModifiedDate?: string
 	lastModifiedBy?: string
 	createdDate?: string
@@ -20,6 +21,7 @@ export interface IIntegrationData {
 export interface IIntegrationFormData {
 	technology: string
 	integrationName: string
+
 	isDirty: boolean
 	hasError: boolean
 	dirtyFields: any
@@ -38,12 +40,12 @@ export interface IATIntegrationFormData extends IIntegrationFormData {
 
 // XXX: Add other tech integration here
 
-export type IntegrationType = IWMIntegrationData | IATIntegrationData
+export type IntegrationDataType = IWMIntegrationData | IATIntegrationData
 
 export interface IInterfaceData {
 	interfaceId: string
 	interfaceName: string
-	connections: IConnectionData[]
+	connections: ConnectionDataType[] // actually not the case for real wM. But the modification should be trivial
 
 	lastModifiedDate?: string
 	lastModifiedBy?: string
@@ -58,6 +60,7 @@ export interface IInterfaceData {
 
 export interface IInterfaceFormData {
 	interfaceName: string
+
 	isDirty: boolean
 	hasError: boolean
 	dirtyFields: any
@@ -82,15 +85,13 @@ export interface IATInterfaceFormData extends IInterfaceFormData {
 }
 
 // XXX: Add other tech interface here
-export type InterfaceType = IWMInterfaceData | IATInterfaceData
+export type InterfaceDataType = IWMInterfaceData | IATInterfaceData
 
 export interface IConnectionData {
 	connectionId: string
 	connectionName: string
 	transferMode: string
 	contentType: string
-	fileName: string
-	portNumbers: string
 
 	lastModifiedDate?: string
 	lastModifiedBy?: string
@@ -106,14 +107,13 @@ export interface IConnectionFormData {
 	connectionName: string
 	transferMode: string
 	contentType: string
-	fileName: string
-	portNumbers: string
 
 	isDirty: boolean
 	hasError: boolean
 	dirtyFields: any
 }
 
+// TODO: Change this interface implementation?
 export interface IWMConnectionData extends IConnectionData {
 	sapServer: string
 	databaseName: string
@@ -123,13 +123,11 @@ export interface IWMConnectionFormData extends IConnectionFormData {
 	databaseName: string
 }
 export interface IATConnectionData extends IConnectionData {
-	protocol: string
 	authenticationType: string
 }
 export interface IATConnectionFormData extends IConnectionFormData {
-	protocol: string
 	authenticationType: string
 }
 
-// XXX: Add other tech interface here
-export type ConnectionData = IWMConnectionData | IATConnectionData
+// XXX: Add other tech connection here
+export type ConnectionDataType = IWMConnectionData | IATConnectionData

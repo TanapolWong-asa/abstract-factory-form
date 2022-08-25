@@ -7,6 +7,12 @@ import { EditPartner } from './pages'
 import ATFormFactory from './pages/EditPartner/FormFactory/ATFormFactory'
 import FormFactory from './pages/EditPartner/FormFactory/FormFactory'
 import WMFormFactory from './pages/EditPartner/FormFactory/WMFormFactory'
+import { ConnectionsContext, IConnectionsContext } from './stores/connections'
+import { AT_CONNETIONS, WM_CONNECTIONS } from './stores/mockData'
+import {
+	ISelectedConnectionsContext,
+	SelectedConnectionsContext,
+} from './stores/selectedConnections'
 import {
 	ISelectedIntegrationContext,
 	SelectedIntegrationContext,
@@ -25,15 +31,22 @@ const App = () => {
 		SelectedIntegrationContext,
 	)
 	const { setSelectedInterface } = useContext<ISelectedInterfaceContext>(SelectedInterfaceContext)
+	const { setSelectedConnections } = useContext<ISelectedConnectionsContext>(
+		SelectedConnectionsContext,
+	)
+	const { setConnections } = useContext<IConnectionsContext>(ConnectionsContext)
 
 	useEffect(() => {
 		if (technology === Technology.WM) {
+			setConnections(WM_CONNECTIONS) // connection type must be switch according to technology
 			setFormFactory(new WMFormFactory())
 		} else if (technology === Technology.AT) {
+			setConnections(AT_CONNETIONS)
 			setFormFactory(new ATFormFactory())
 		}
 		setSelectedIntegration(null)
 		setSelectedInterface(null)
+		setSelectedConnections([])
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [technology])
 

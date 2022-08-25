@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 
-import { IntegrationType } from '../../pages/EditPartner/interfaces'
+import { IntegrationDataType } from '../../pages/EditPartner/interfaces'
 import { IIntegrationsContext, IntegrationsContext } from '../../stores/intergrations'
 import {
 	ISelectedIntegrationContext,
@@ -18,7 +18,7 @@ const IntegrationSelector: FunctionComponent<IntegrationSelectorProps> = ({
 	const { setSelectedIntegration } = useContext<ISelectedIntegrationContext>(
 		SelectedIntegrationContext,
 	)
-	const [filteredIntegrations, setFilteredIntegrations] = useState<IntegrationType[]>([])
+	const [filteredIntegrations, setFilteredIntegrations] = useState<IntegrationDataType[]>([])
 
 	useEffect(() => {
 		setFilteredIntegrations(
@@ -26,13 +26,13 @@ const IntegrationSelector: FunctionComponent<IntegrationSelectorProps> = ({
 		)
 	}, [technology, integrations])
 
-	// FIXME Warning: Encountered two children with the same key, `integration6`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+	// Warning: Encountered two children with the same key, `integration6`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
 	// at select
 	// at IntegrationSelector
 	// at div
 	// at App
 	// Noted that the key is different from time to time (not only for id=6)
-	// TODO: Something in InterfaceForm make a copy of existing integration and apply it back to the list
+	// TODO: Something in InterfaceForm make a copy of existing integration and apply it back to the list (fix?)
 	return (
 		<select
 			onChange={(e) => {

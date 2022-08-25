@@ -2,13 +2,13 @@
 import React from 'react'
 
 import {
-	IntegrationsAndInterfacesContext,
 	ISelectedIntegrationAndSelectedInterfaceContext,
+	SelectedIntegrationAndSelectedInterfaceContext,
 	SelectedIntegrationAndSelectedInterfaceProvider,
 } from '../../../../stores/combinedStore/integrationAndInterface'
 import { FormItem } from '../../Form/interfaces'
 import { InterfaceFormType, ReusableInterfaceForm } from '../../Form/reusableForm'
-import { InterfaceType, IWMInterfaceData, IWMInterfaceFormData } from '../../interfaces'
+import { InterfaceDataType, IWMInterfaceData, IWMInterfaceFormData } from '../../interfaces'
 import InterfaceForm from './InterfaceForm'
 
 const WMInterfaceForm = () => (
@@ -34,7 +34,7 @@ class WMInterfaceFormInner extends InterfaceForm {
 	}
 
 	protected preprocessInterfaceInfoFormData(
-		selectedInterface: InterfaceType | null,
+		selectedInterface: InterfaceDataType | null,
 	): InterfaceFormType {
 		if (selectedInterface === null) {
 			return {
@@ -116,6 +116,7 @@ class WMInterfaceFormInner extends InterfaceForm {
 				preprocessInterfaceInfoFormData={this.preprocessInterfaceInfoFormData}
 			/>
 		)
+		// In case of real wM interface form, we'll have connection and transaction form down here as well (transaction form will also affect connection form since connection is within transaction list)
 	}
 }
-WMInterfaceFormInner.contextType = IntegrationsAndInterfacesContext
+WMInterfaceFormInner.contextType = SelectedIntegrationAndSelectedInterfaceContext

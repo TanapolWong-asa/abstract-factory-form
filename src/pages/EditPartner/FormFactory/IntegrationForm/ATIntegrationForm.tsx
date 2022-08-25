@@ -4,12 +4,12 @@ import React from 'react'
 import { ISelectedIntegrationContext } from '../../../../stores/selectedIntegration'
 import { FormItem } from '../../Form/interfaces'
 import { ReusableIntegrationForm } from '../../Form/reusableForm'
-import { IATIntegrationData, IATIntegrationFormData, IntegrationType } from '../../interfaces'
+import { IATIntegrationData, IATIntegrationFormData, IntegrationDataType } from '../../interfaces'
 import IntegrationForm from './IntegrationForm'
 
 class ATIntegrationForm extends IntegrationForm {
 	protected preprocessIntegrationInfoFormData(
-		selectedIntegration: IntegrationType | null,
+		selectedIntegration: IntegrationDataType | null,
 	): IATIntegrationFormData {
 		if (selectedIntegration === null) {
 			return {

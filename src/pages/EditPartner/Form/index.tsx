@@ -4,7 +4,14 @@
 /* eslint-disable import/no-cycle */
 import React, { useEffect, useState } from 'react'
 
-export type InputType = 'text' | 'select' | 'checkbox' | 'textarea' | 'file' | 'multiplefiles'
+export type InputType =
+	| 'text'
+	| 'select'
+	| 'multipleselect'
+	| 'checkbox'
+	| 'textarea'
+	| 'file'
+	| 'multiplefiles'
 export type option = {
 	label: string
 	value: string
@@ -155,6 +162,59 @@ export const RenderFormItemByType: React.FC<RenderFormItemByTypeProps> = ({
 								})}
 								disabled={disabled}
 								style={inputStyle}
+							>
+								{options &&
+									options.map((item) => (
+										<option key={item.label} value={item.value}>
+											{item.label}
+										</option>
+									))}
+							</select>
+							{formItemName &&
+								errors[formItemName] &&
+								errors[formItemName].type === 'required' && (
+									<p className="text-red-500 text-xs italic">
+										This is a required field.
+									</p>
+								)}
+							{formItemName &&
+								errors[formItemName] &&
+								errors[formItemName].type === 'pattern' && (
+									<p className="text-red-500 text-xs italic">
+										{errors[formItemName].message}
+									</p>
+								)}
+						</div>
+					</div>
+				</div>
+			)
+		case 'multipleselect':
+			return (
+				<div className={className}>
+					<div className="flex">
+						<span
+							className="font-semibold text-left px-4 w-1/4"
+							style={{ whiteSpace: 'pre-line' }}
+						>
+							{label}
+							{required && <span className="text-red-500 text-xs"> * </span>}:
+						</span>
+						<div className="w-full">
+							<select
+								name={formItemName}
+								className={`w-full  border ${borderColor} py-2 px-4 px-6 rounded 
+                                focus:outline-none 
+                                focus:bg-white focus:${focusColor}`}
+								ref={register({
+									required,
+									pattern: {
+										value: regex,
+										message: errorMessage,
+									},
+								})}
+								disabled={disabled}
+								style={inputStyle}
+								multiple
 							>
 								{options &&
 									options.map((item) => (

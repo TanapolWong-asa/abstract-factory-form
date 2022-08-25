@@ -1,11 +1,11 @@
 import React, { createContext, FunctionComponent, SetStateAction, useState } from 'react'
 
-import { IntegrationType } from '../pages/EditPartner/interfaces'
+import { IntegrationDataType } from '../pages/EditPartner/interfaces'
 import { INTEGRATIONS } from './mockData'
 
 export interface IIntegrationsContext {
-	integrations: IntegrationType[]
-	setIntegrations: React.Dispatch<SetStateAction<IntegrationType[]>>
+	integrations: IntegrationDataType[]
+	setIntegrations: React.Dispatch<SetStateAction<IntegrationDataType[]>>
 }
 export const IntegrationsContext = createContext<IIntegrationsContext>({
 	integrations: [],
@@ -15,7 +15,7 @@ export const IntegrationsContext = createContext<IIntegrationsContext>({
 interface IntegrationsProviderProps {}
 
 export const IntegrationsProvider: FunctionComponent<IntegrationsProviderProps> = (props: any) => {
-	const [integrations, setIntegrations] = useState<IntegrationType[]>(INTEGRATIONS)
+	const [integrations, setIntegrations] = useState<IntegrationDataType[]>(INTEGRATIONS)
 
 	const value: IIntegrationsContext = {
 		integrations,

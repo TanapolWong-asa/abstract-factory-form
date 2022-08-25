@@ -1,10 +1,10 @@
 import React, { createContext, FunctionComponent, SetStateAction, useState } from 'react'
 
-import { InterfaceType } from '../pages/EditPartner/interfaces'
+import { InterfaceDataType } from '../pages/EditPartner/interfaces'
 
 export interface IInterfacesContext {
-	interfaces: InterfaceType[]
-	setInterfaces: React.Dispatch<SetStateAction<InterfaceType[]>>
+	interfaces: InterfaceDataType[]
+	setInterfaces: React.Dispatch<SetStateAction<InterfaceDataType[]>>
 }
 export const InterfacesContext = createContext<IInterfacesContext>({
 	interfaces: [],
@@ -14,7 +14,7 @@ export const InterfacesContext = createContext<IInterfacesContext>({
 interface InterfacesProviderProps {}
 
 export const InterfacesProvider: FunctionComponent<InterfacesProviderProps> = (props: any) => {
-	const [interfaces, setInterfaces] = useState<InterfaceType[]>([])
+	const [interfaces, setInterfaces] = useState<InterfaceDataType[]>([])
 
 	const value: IInterfacesContext = {
 		interfaces,

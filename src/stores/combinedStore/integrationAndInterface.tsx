@@ -7,7 +7,7 @@ export interface ISelectedIntegrationAndSelectedInterfaceContext {
 	selectedIntegrationContext: ISelectedIntegrationContext | null
 	selectedInterfaceContext: ISelectedInterfaceContext | null
 }
-export const IntegrationsAndInterfacesContext =
+export const SelectedIntegrationAndSelectedInterfaceContext =
 	createContext<ISelectedIntegrationAndSelectedInterfaceContext>({
 		selectedIntegrationContext: null,
 		selectedInterfaceContext: null,
@@ -22,11 +22,11 @@ export const SelectedIntegrationAndSelectedInterfaceProvider: FunctionComponent<
 		{(selectedIntegrationContext) => (
 			<SelectedInterfaceContext.Consumer>
 				{(selectedInterfaceContext) => (
-					<IntegrationsAndInterfacesContext.Provider
+					<SelectedIntegrationAndSelectedInterfaceContext.Provider
 						value={{ selectedIntegrationContext, selectedInterfaceContext }}
 					>
 						{props.children}
-					</IntegrationsAndInterfacesContext.Provider>
+					</SelectedIntegrationAndSelectedInterfaceContext.Provider>
 				)}
 			</SelectedInterfaceContext.Consumer>
 		)}
