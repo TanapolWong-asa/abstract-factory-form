@@ -49,7 +49,6 @@ class WMConnectionFormInner extends ConnectionForm {
 		return `${partnerId}-${selectedIntegration?.integrationId}-${selectedInterface?.interfaceId}-WMConnectionDraft` // Recommended draft key pattern
 	}
 
-	// FIXME: onChange make form stage go back to interface stage
 	render() {
 		return (
 			<ReusableConnectionsForm
