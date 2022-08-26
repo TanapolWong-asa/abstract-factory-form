@@ -327,7 +327,6 @@ export const ReusableInterfaceForm: React.FunctionComponent<ReusableInterfaceFor
 
 // This form is not input-to-the-field kind of form, it's a select-multiple-item form which could be handle by using 'multipleselect'
 // XXX: Since connections will be save as a list, some of the methods will be implemented in different way
-// TODO: Re-implement this to use with list form item
 interface ReusableConnectionsFormProps {
 	saveDraft: (content: string) => void
 	readDraft: () => string | null
@@ -372,7 +371,6 @@ const ReusableConnectionsForm: React.FunctionComponent<ReusableConnectionsFormPr
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
-	// TODO: implement this
 	const updateSelectedConnections = (selectedConnectionsId: string[]) => {
 		if (selectedInterface === null || selectedIntegration === null) return
 
@@ -415,8 +413,6 @@ const ReusableConnectionsForm: React.FunctionComponent<ReusableConnectionsFormPr
 				return integration
 			}),
 		)
-
-		// TODO: implement updating integrations, selectedIntegrations, selectedInterfaces
 	}
 	return (
 		<form

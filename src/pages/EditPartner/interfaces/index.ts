@@ -113,7 +113,6 @@ export interface IConnectionFormData {
 	dirtyFields: any
 }
 
-// TODO: Change this interface implementation?
 export interface IWMConnectionData extends IConnectionData {
 	sapServer: string
 	databaseName: string
