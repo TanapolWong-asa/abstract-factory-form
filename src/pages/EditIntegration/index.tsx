@@ -16,19 +16,24 @@ import InterfaceForm from './FormFactory/InterfaceForm/InterfaceForm'
 
 interface EditPartnerProps {
 	formFactory: FormFactory
+	stage: number
+	setStage: React.Dispatch<React.SetStateAction<number>>
 }
 
-const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerProps) => {
-	const [stage, setStage] = useState<number>(1)
+const EditIntegration: React.FC<EditPartnerProps> = ({
+	formFactory,
+	stage,
+	setStage,
+}: EditPartnerProps) => {
 	const [form, setForm] = useState<IntegrationForm | InterfaceForm | ConnectionForm | ReactNode>(
 		null,
 	)
-	const { selectedIntegration, setSelectedIntegration } = useContext<ISelectedIntegrationContext>(
+	const { selectedIntegration } = useContext<ISelectedIntegrationContext>(
 		SelectedIntegrationContext,
 	)
 	const { selectedInterface, setSelectedInterface } =
 		useContext<ISelectedInterfaceContext>(SelectedInterfaceContext)
-	const { selectedConnections, setSelectedConnections } = useContext<ISelectedConnectionsContext>(
+	const { setSelectedConnections } = useContext<ISelectedConnectionsContext>(
 		SelectedConnectionsContext,
 	)
 
@@ -69,6 +74,8 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 		<button
 			type="button"
 			onClick={() => {
+				if (stage === 2 && selectedInterface === null) return
+
 				setStage(stage + 1)
 			}}
 		>
@@ -113,7 +120,7 @@ const EditPartner: React.FC<EditPartnerProps> = ({ formFactory }: EditPartnerPro
 	)
 }
 
-export default EditPartner
+export default EditIntegration
 
 const CurrentFormData = () => {
 	const { selectedIntegration } = useContext<ISelectedIntegrationContext>(

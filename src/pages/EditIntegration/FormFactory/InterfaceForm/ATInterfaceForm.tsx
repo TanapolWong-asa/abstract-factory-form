@@ -11,9 +11,13 @@ import { InterfaceFormType, ReusableInterfaceForm } from '../../Form/reusableFor
 import { IATInterfaceData, IATInterfaceFormData, InterfaceDataType } from '../../interfaces'
 import InterfaceForm from './InterfaceForm'
 
-const ATInterfaceForm = () => (
+const ATInterfaceForm = ({
+	setStage,
+}: {
+	setStage: React.Dispatch<React.SetStateAction<number>>
+}) => (
 	<SelectedIntegrationAndSelectedInterfaceProvider>
-		<ATInterfaceFormInner />
+		<ATInterfaceFormInner setStage={setStage} />
 	</SelectedIntegrationAndSelectedInterfaceProvider>
 )
 class ATInterfaceFormInner extends InterfaceForm {

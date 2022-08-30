@@ -1,6 +1,6 @@
 import React, { createContext, FunctionComponent, SetStateAction, useState } from 'react'
 
-import { InterfaceDataType } from '../pages/EditPartner/interfaces'
+import { InterfaceDataType } from '../pages/EditIntegration/interfaces'
 
 export interface IInterfacesContext {
 	interfaces: InterfaceDataType[]

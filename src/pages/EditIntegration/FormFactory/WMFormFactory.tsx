@@ -10,13 +10,19 @@ import InterfaceForm from './InterfaceForm/InterfaceForm'
 import WMInterfaceForm from './InterfaceForm/WMInterfaceForm'
 
 class WMFormFactory implements FormFactory {
+	private setStage: React.Dispatch<React.SetStateAction<number>>
+
+	constructor(setStage: React.Dispatch<React.SetStateAction<number>>) {
+		this.setStage = setStage
+	}
+
 	// must be render this way to trigger react's lifecycle method
 	createIntegrationForm(): IntegrationForm {
-		return (<WMIntegrationForm />) as unknown as IntegrationForm
+		return (<WMIntegrationForm setStage={this.setStage} />) as unknown as IntegrationForm
 	}
 
 	createInterfaceForm(): InterfaceForm {
-		return (<WMInterfaceForm />) as unknown as InterfaceForm
+		return (<WMInterfaceForm setStage={this.setStage} />) as unknown as InterfaceForm
 	}
 
 	createConnectionForm(): ConnectionForm {

@@ -10,12 +10,18 @@ import ATInterfaceForm from './InterfaceForm/ATInterfaceForm'
 import InterfaceForm from './InterfaceForm/InterfaceForm'
 
 class ATFormFactory implements FormFactory {
+	private setStage: React.Dispatch<React.SetStateAction<number>>
+
+	constructor(setStage: React.Dispatch<React.SetStateAction<number>>) {
+		this.setStage = setStage
+	}
+
 	createIntegrationForm(): IntegrationForm {
-		return (<ATIntegrationForm />) as unknown as IntegrationForm
+		return (<ATIntegrationForm setStage={this.setStage} />) as unknown as IntegrationForm
 	}
 
 	createInterfaceForm(): InterfaceForm {
-		return (<ATInterfaceForm />) as unknown as InterfaceForm
+		return (<ATInterfaceForm setStage={this.setStage} />) as unknown as InterfaceForm
 	}
 
 	createConnectionForm(): ConnectionForm {

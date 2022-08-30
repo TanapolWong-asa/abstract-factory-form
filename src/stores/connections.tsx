@@ -1,6 +1,6 @@
 import React, { createContext, FunctionComponent, SetStateAction, useState } from 'react'
 
-import { ConnectionDataType } from '../pages/EditPartner/interfaces'
+import { ConnectionDataType } from '../pages/EditIntegration/interfaces'
 
 export interface IConnectionsContext {
 	connections: ConnectionDataType[]

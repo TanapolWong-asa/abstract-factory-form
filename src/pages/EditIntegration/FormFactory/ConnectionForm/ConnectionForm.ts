@@ -5,8 +5,6 @@ interface ConnectionFormProps extends DraftableFormProps {}
 
 interface ConnectionFormState extends DraftableFormStates {}
 abstract class ConnectionForm extends DraftableForm<ConnectionFormProps, ConnectionFormState> {
-	protected currentStage = 3
-
 	constructor(props: ConnectionFormProps) {
 		super(props)
 		// this.preprocessConnectionsInfoFormData = this.preprocessConnectionsInfoFormData.bind(this)

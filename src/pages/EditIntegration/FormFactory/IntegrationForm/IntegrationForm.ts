@@ -6,13 +6,18 @@ import { FormItem } from '../../Form/interfaces'
 import { IIntegrationFormData, IntegrationDataType } from '../../interfaces'
 import DraftableForm from '../DraftableForm'
 
-interface IntegrationFormProps {}
-interface IntegrationFormStates {}
+interface IntegrationFormProps {
+	setStage: React.Dispatch<React.SetStateAction<number>>
+}
+interface IntegrationFormStates {
+	setStage: React.Dispatch<React.SetStateAction<number>>
+}
 abstract class IntegrationForm extends DraftableForm<IntegrationFormProps, IntegrationFormStates> {
-	protected currentStage = 1 // might be useless
-
-	constructor(props: any) {
+	constructor(props: IntegrationFormProps) {
 		super(props)
+		this.state = {
+			setStage: props.setStage,
+		}
 		this.preprocessIntegrationInfoFormData = this.preprocessIntegrationInfoFormData.bind(this)
 		this.generateFormList = this.generateFormList.bind(this)
 	}

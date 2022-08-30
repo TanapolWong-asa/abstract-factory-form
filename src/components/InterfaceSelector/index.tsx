@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 
-import { InterfaceDataType } from '../../pages/EditPartner/interfaces'
+import { InterfaceDataType } from '../../pages/EditIntegration/interfaces'
 import {
 	ISelectedIntegrationContext,
 	SelectedIntegrationContext,

@@ -11,9 +11,13 @@ import { InterfaceFormType, ReusableInterfaceForm } from '../../Form/reusableFor
 import { InterfaceDataType, IWMInterfaceData, IWMInterfaceFormData } from '../../interfaces'
 import InterfaceForm from './InterfaceForm'
 
-const WMInterfaceForm = () => (
+const WMInterfaceForm = ({
+	setStage,
+}: {
+	setStage: React.Dispatch<React.SetStateAction<number>>
+}) => (
 	<SelectedIntegrationAndSelectedInterfaceProvider>
-		<WMInterfaceFormInner />
+		<WMInterfaceFormInner setStage={setStage} />
 	</SelectedIntegrationAndSelectedInterfaceProvider>
 )
 

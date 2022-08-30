@@ -1,6 +1,6 @@
 import React, { createContext, FunctionComponent, SetStateAction, useState } from 'react'
 
-import { IntegrationDataType } from '../pages/EditPartner/interfaces'
+import { IntegrationDataType } from '../pages/EditIntegration/interfaces'
 
 export interface ISelectedIntegrationContext {
 	partnerId: string

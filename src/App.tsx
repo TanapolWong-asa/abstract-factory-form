@@ -3,10 +3,10 @@ import './App.css'
 import React, { useContext, useEffect, useState } from 'react'
 
 import { IntegrationSelector, InterfaceSelector, TechnologySelector } from './components'
-import { EditPartner } from './pages'
-import ATFormFactory from './pages/EditPartner/FormFactory/ATFormFactory'
-import FormFactory from './pages/EditPartner/FormFactory/FormFactory'
-import WMFormFactory from './pages/EditPartner/FormFactory/WMFormFactory'
+import { EditIntegration } from './pages'
+import ATFormFactory from './pages/EditIntegration/FormFactory/ATFormFactory'
+import FormFactory from './pages/EditIntegration/FormFactory/FormFactory'
+import WMFormFactory from './pages/EditIntegration/FormFactory/WMFormFactory'
 import { ConnectionsContext, IConnectionsContext } from './stores/connections'
 import { AT_CONNETIONS, WM_CONNECTIONS } from './stores/mockData'
 import {
@@ -27,6 +27,8 @@ export enum Technology {
 const App = () => {
 	const [technology, setTechnology] = useState<string>('')
 	const [formFactory, setFormFactory] = useState<FormFactory>()
+	const [stage, setStage] = useState<number>(1)
+
 	const { selectedIntegration, setSelectedIntegration } = useContext<ISelectedIntegrationContext>(
 		SelectedIntegrationContext,
 	)
@@ -39,10 +41,10 @@ const App = () => {
 	useEffect(() => {
 		if (technology === Technology.WM) {
 			setConnections(WM_CONNECTIONS) // connection type must be switch according to technology
-			setFormFactory(new WMFormFactory())
+			setFormFactory(new WMFormFactory(setStage))
 		} else if (technology === Technology.AT) {
 			setConnections(AT_CONNETIONS)
-			setFormFactory(new ATFormFactory())
+			setFormFactory(new ATFormFactory(setStage))
 		}
 		setSelectedIntegration(null)
 		setSelectedInterface(null)
@@ -58,7 +60,9 @@ const App = () => {
 			/>
 			{technology !== '' && <IntegrationSelector technology={technology} />}
 			{selectedIntegration && <InterfaceSelector technology={technology} />}
-			{formFactory && <EditPartner formFactory={formFactory} />}
+			{formFactory && (
+				<EditIntegration formFactory={formFactory} stage={stage} setStage={setStage} />
+			)}
 		</div>
 	)
 }

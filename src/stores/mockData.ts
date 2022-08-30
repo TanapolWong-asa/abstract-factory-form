@@ -2,7 +2,7 @@ import {
 	IATConnectionData,
 	IntegrationDataType,
 	IWMConnectionData,
-} from '../pages/EditPartner/interfaces'
+} from '../pages/EditIntegration/interfaces'
 
 export const INTEGRATIONS: IntegrationDataType[] = [
 	{

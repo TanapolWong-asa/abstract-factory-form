@@ -6,13 +6,18 @@ import { InterfaceFormType } from '../../Form/reusableForm'
 import { InterfaceDataType } from '../../interfaces'
 import DraftableForm, { DraftableFormProps, DraftableFormStates } from '../DraftableForm'
 
-interface InterfaceFormProps extends DraftableFormProps {}
-interface InterfaceFormStates extends DraftableFormStates {}
+interface InterfaceFormProps extends DraftableFormProps {
+	setStage: React.Dispatch<React.SetStateAction<number>>
+}
+interface InterfaceFormStates extends DraftableFormStates {
+	setStage: React.Dispatch<React.SetStateAction<number>>
+}
 abstract class InterfaceForm extends DraftableForm<InterfaceFormProps, InterfaceFormStates> {
-	protected currentStage = 2
-
 	constructor(props: InterfaceFormProps) {
 		super(props)
+		this.state = {
+			setStage: props.setStage,
+		}
 		this.preprocessInterfaceInfoFormData = this.preprocessInterfaceInfoFormData.bind(this)
 		this.generateFormList = this.generateFormList.bind(this)
 	}
